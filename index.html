@@ -1,380 +1,363 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-page-node-id="jTSjqXjHQcbVKsYHK8Hpjv">
-<head data-page-node-id="1mokhS5SImO8703IjBDbI9">
-<meta charset="UTF-8" data-page-node-id="SROwraIY1dN8iFBaidV8CC" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" data-page-node-id="CpcidwaTLIFFUVMZ31QfCc" />
-<title>台北味 Taipei Bites — 用味道記住一座城市</title>
-<meta name="description" content="台北美食地圖：八大味覺分類、精選餐廳、四大夜市與互動式美食地圖，帶你用味道認識台北。" data-page-node-id="7f8KuD58IlfqQKG7KuGka0" />
-<link rel="stylesheet" href="styles.css" data-page-node-id="7j2y8wVe3HGMRuEBHTrQPB" />
+<html lang="zh-Hant" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>圓通食堂 — 台大圓通宿舍生活美食指南</title>
+<meta name="description" content="由桃園機場到圓通雅筑國際學舍，一路吃到南勢角、華新街與公館台大。60+ 間店舖、推薦指數、人均台幣、Google Map 與 YouTube 食評一次到位。" />
+<meta name="theme-color" content="#0b0b0d" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="styles.css" />
 </head>
-<body data-page-node-id="4QqGVkyJjaSBlXSklCvSKM">
+<body>
+
+<!-- ══════════ 載入動畫 ══════════ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <div class="loader__ring"><i></i><i></i><i></i></div>
+    <p class="loader__text">圓通食堂<span>Yuantong Table</span></p>
+  </div>
+</div>
 
 <!-- ══════════ 進度條 + 導覽列 ══════════ -->
-<header class="nav" id="nav" data-page-node-id="AzMogvp6JOTulVO0oG404N">
-  <div class="nav__inner" data-page-node-id="uaN9QaLtBCbrkTVQ22Kd0X">
-    <a class="nav__brand" href="#top" aria-label="台北味 首頁" data-page-node-id="s3tDKNyo2G3eGE8IDxxJwp">
-      <span class="nav__mark" aria-hidden="true" data-page-node-id="pQGNBjWy9EJ0Q05aqyDFUw"></span>
-      <span class="nav__name" data-page-node-id="RsK9JtnWBpcpccNlb5u9y4">台北味<i data-page-node-id="bIq6EXoupuMA4xwOPNnxAM">Taipei&nbsp;Bites</i></span>
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top" aria-label="圓通食堂 首頁">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span class="nav__name">圓通食堂<i>Yuantong&nbsp;Table</i></span>
     </a>
 
-    <nav class="nav__links" aria-label="主選單" data-page-node-id="C03rJ3UtgKADHsdogNMlC5">
-      <a href="#categories" data-nav="categories" data-page-node-id="oDPJKxi1pU4sMLOwOtIDWZ">味覺分類</a>
-      <a href="#restaurants" data-nav="restaurants" data-page-node-id="cI5TAnZCwWsQJrRjkSCI13">精選餐廳</a>
-      <a href="#night" data-nav="night" data-page-node-id="Qk33qLK50mHOYYR6V6HCU4">夜市小吃</a>
-      <a href="#map" data-nav="map" data-page-node-id="b5wxzuCRy1cAC6cNE3Lp8l">美食地圖</a>
+    <nav class="nav__links" aria-label="主選單">
+      <a href="#route" data-nav="route">到埗交通</a>
+      <a href="#shops" data-nav="shops">美食清單</a>
+      <a href="#map" data-nav="map">生活圈地圖</a>
+      <a href="#tips" data-nav="tips">住宿生存術</a>
     </nav>
 
-    <a class="nav__cta" href="#map" data-page-node-id="ovnaXkbOnbTmQQd4ksvFki">打開地圖</a>
+    <div class="nav__tools">
+      <button class="themebtn" id="themeBtn" aria-label="切換深色／淺色模式" aria-pressed="true">
+        <svg class="themebtn__sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><path d="M12 2.6v2.4M12 19v2.4M2.6 12h2.4M19 12h2.4M5.4 5.4l1.7 1.7M16.9 16.9l1.7 1.7M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7"/></g></svg>
+        <svg class="themebtn__moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 1 1 9.4 3.5a6.9 6.9 0 0 0 11.1 11.1Z"/></svg>
+        <span class="themebtn__label" id="themeLabel">深色</span>
+      </button>
+      <a class="nav__cta" href="#shops">開始覓食</a>
+    </div>
 
-    <button class="nav__burger" id="burger" aria-label="選單" aria-expanded="false" data-page-node-id="UGMS6czEMzHT2QHzRBbB2s">
-      <span data-page-node-id="cXSbD7pmnly290h1B8Ab4h"></span><span data-page-node-id="EeRIxMmfmQaYu5F3zvBfug"></span>
+    <button class="nav__burger" id="burger" aria-label="選單" aria-expanded="false">
+      <span></span><span></span>
     </button>
   </div>
 
-  <div class="nav__progress" data-page-node-id="9WNZ8apHDeoUzQK8AAdIZG"><i id="progress" data-page-node-id="z0fVBvvOWX0eoFlqvNKhqQ"></i></div>
+  <div class="nav__progress"><i id="progress"></i></div>
 
-  <div class="nav__sheet" id="sheet" data-page-node-id="KyLGbVZQBjXUxSiR5KcQY6">
-    <a href="#categories" data-page-node-id="PUZiuhvOfE0GKsy4qRr7Ev">味覺分類</a>
-    <a href="#restaurants" data-page-node-id="CuaKMtZoGGPQwdVlBUvuut">精選餐廳</a>
-    <a href="#night" data-page-node-id="gIAVhLGwxsadMqPsAkGUlr">夜市小吃</a>
-    <a href="#map" data-page-node-id="Iic6TrQOcwrfevMLSdSCwi">美食地圖</a>
+  <div class="nav__sheet" id="sheet">
+    <a href="#route">到埗交通</a>
+    <a href="#shops">美食清單</a>
+    <a href="#map">生活圈地圖</a>
+    <a href="#tips">住宿生存術</a>
   </div>
 </header>
 
-<main id="top" data-page-node-id="H6QH5V0V3OYTYrnqqljMVp">
+<main id="top">
 
-  <!-- ══════════ HERO ══════════ -->
-  <section class="hero" data-page-node-id="YdEB0gZ3YW8kWicvNmzVVE">
-    <div class="hero__glow" aria-hidden="true" data-page-node-id="zyfm2Uwab5iMFWnMoqjKK8"></div>
-    <div class="hero__grain" aria-hidden="true" data-page-node-id="FbOeTWxFhfmA4CYoJgqo2e"></div>
+  <!-- ══════════ HERO ─ 頁首照片 ══════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__media stage" id="heroStage">
+      <img src="assets/nightmarket-wide.jpg" alt="台北夜市攤檔的溫暖燈光" />
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
 
-    <div class="wrap hero__inner" data-page-node-id="vpsJXZejuOO7GyKfghKnlb">
-      <p class="eyebrow reveal" data-page-node-id="aTKQ4NZCdvibWtB88iGHND">Taipei Taste Atlas · 2026</p>
+    <div class="wrap hero__inner">
+      <p class="eyebrow reveal">NTU Yuantong Dorm · Food Guide · 2026</p>
 
-      <h1 class="hero__title reveal" style="--i:1" data-page-node-id="WGG3X2TgHMelEVWZxx46mk">
-        用味道<br  data-page-node-id="XLCNyZYV4fZTdvSEy3hgM9"/>記住一座城市<span class="hero__dot" data-page-node-id="rAMrvl8BtOh3PcsEmIMHJ8">。</span>
+      <h1 class="hero__title reveal" style="--i:1">
+        由機場到宿舍<br />一路食到台大<span class="hero__dot">。</span>
       </h1>
 
-      <p class="hero__sub reveal" style="--i:2" data-page-node-id="edNeQG1qju06y7HJqssg73">
-        從清晨第一碗豆漿，到深夜最後一串鹽酥雞。我們走過台北 12 個街區，
-        把 24 種值得排隊的理由，收進這張地圖裡。
+      <p class="hero__sub reveal" style="--i:2">
+        專為即將入住<b>圓通雅筑國際學舍</b>嘅你而寫。落機第一餐、宿舍樓下嘅南勢角、
+        華新街嘅南洋味，再搭幾個站去公館台大搵嘢食 ——
+        全部有地址、營業時間、人均台幣、推薦指數，一撳直達 Google Map 同食評片。
       </p>
 
-      <div class="hero__actions reveal" style="--i:3" data-page-node-id="7Vnk3bnib1nWqg6JcGBAic">
-        <a class="btn btn--primary" href="#restaurants" data-page-node-id="xMhMbNF2uglEQDbJRfoBiy">開始探索</a>
-        <a class="btn btn--ghost" href="#map" data-page-node-id="J2POwD0HZcPGI7Kck0CebA">看看地圖 <span aria-hidden="true" data-page-node-id="U8AbCZHlsNWinCPGyDYFC9">→</span></a>
+      <div class="hero__actions reveal" style="--i:3">
+        <a class="btn btn--primary" href="#shops">睇美食清單</a>
+        <a class="btn btn--ghost" href="#route">點去宿舍</a>
       </div>
-    </div>
 
-    <div class="wrap wrap--wide hero__stage" data-page-node-id="bowBGGNrIjAXHISMU5mMmg">
-      <figure class="stage reveal" style="--i:4" data-parallax="0.10" data-page-node-id="ThaGQejAWFaSkcvr3GbfHg">
-        <img src="assets/hero-nightmarket.jpg" alt="台北夜市裡燈火通明的攤位人潮" width="1920" height="1280" fetchpriority="high" data-page-node-id="HF2UoXZ3FmcGWhbTFCdz4E" />
-        <figcaption class="stage__cap" data-page-node-id="m2nb5a7Vfx5IqJ8WtWxg5M">
-          <span class="stage__badge" data-page-node-id="Ptht1C7X0qjUEOLpVJGxe3">夜市 · 18:00 開市</span>
-          <span class="stage__txt" data-page-node-id="mycpjlxktZzInSP5seGPUw">城市的第二個胃，天黑才醒。</span>
-        </figcaption>
-      </figure>
-    </div>
-
-    <!-- 數字統計 -->
-    <div class="wrap" data-page-node-id="WefTdaASqkqtfjzjGHuoQj">
-      <ul class="stats reveal" style="--i:5" data-page-node-id="RxY1UHLe3QCss3yHcSrlaX">
-        <li data-page-node-id="UL9ZHbezRT1nqOsT9tQUYA"><b data-count="8" data-page-node-id="I1iepwuBtFKMxb7ziLrTFH">0</b><span data-page-node-id="WHtzHHtoooxclF94RTQg54">種味覺分類</span></li>
-        <li data-page-node-id="UHpTDkYDAYGs9eexGhEWhD"><b data-count="12" data-page-node-id="aTaAPM3SIj6HeH97dnKpgq">0</b><span data-page-node-id="aiesmBMoAgTvJToQQOqJ8D">家精選餐廳</span></li>
-        <li data-page-node-id="Sq69PCrfyjMAEyhaJrH2id"><b data-count="4" data-page-node-id="DrXVmiS6ngSMLHEyh5Z50o">0</b><span data-page-node-id="xOHQKzTRyjRHwbBpXY0AAs">座經典夜市</span></li>
-        <li data-page-node-id="NHpkQHdxE1VywEN1Jqsjik"><b data-count="24" data-page-node-id="qhdchaWaMCCVzAnUHsckNp">0</b><span data-page-node-id="eDUGQMvxHDgq8bDbQKnOt8">項必吃小吃</span></li>
+      <ul class="hero__stats reveal" style="--i:4">
+        <li><b data-count="62">0</b><span>間店舖</span></li>
+        <li><b data-count="3">0</b><span>大地區</span></li>
+        <li><b data-count="159" data-prefix="NT$">0</b><span>平均人均</span></li>
+        <li><b data-count="4.25" data-dec="2">0</b><span>平均推薦指數</span></li>
       </ul>
     </div>
+
+    <div class="hero__scroll" aria-hidden="true"><i></i></div>
   </section>
 
-  <!-- ══════════ 味覺分類 ══════════ -->
-  <section class="section" id="categories" data-page-node-id="jqY8do1x7vGSiSyraCUK0R">
-    <div class="wrap" data-page-node-id="z6lErI5RgJXCtezHGciBqU">
-      <header class="head" data-page-node-id="aHSnDw0NaqUWmAlUMZ7OOD">
-        <p class="eyebrow reveal" data-page-node-id="aEf806JRpYsyqYnQzF4Kls">味覺分類</p>
-        <h2 class="h2 reveal" style="--i:1" data-page-node-id="hjNBss3t6GJRNw0yBfGmpg">從一碗麵開始，<br  data-page-node-id="xsCrPWDRMRCAjr64F2kOqV"/>認識台北。</h2>
-        <p class="lead reveal" style="--i:2" data-page-node-id="KU7wcG3UJsP8ibCgA6BlgE">
-          八種台北人習以為常的日常味道。點選任一分類，下方的精選餐廳會立刻為你篩選。
+  <!-- ══════════ 到埗交通 ══════════ -->
+  <section class="section route" id="route">
+    <div class="wrap">
+      <header class="shead">
+        <p class="eyebrow reveal">Arrival Route</p>
+        <h2 class="shead__title reveal" style="--i:1">落機之後，<br />點樣去到圓通宿舍？</h2>
+        <p class="shead__sub reveal" style="--i:2">
+          桃園機場 → 機場捷運 → 轉捷運到 <b>南勢角站</b> → 宿舍。全程約 70–90 分鐘，
+          沿途每一站都有嘢食，所以路程本身就係「到埗美食」嘅起點。
         </p>
       </header>
 
-      <div class="cats" data-page-node-id="NdkAyTfhMdpXVPP2GM6BX7">
-        <button class="cat reveal" style="--i:1" data-goto="noodle" data-page-node-id="sMpVuBDNwOZxWrPKwnB3Ho">
-          <img src="assets/cat-beef-noodle.jpg" alt="番茄牛肉麵" loading="lazy" data-page-node-id="guGDyUNGwh8RaKDU0RT3ap" />
-          <span class="cat__shade" data-page-node-id="HdvGShEASriDQKamY85X95"></span>
-          <span class="cat__body" data-page-node-id="wBR1T4ss1nhKOjRDADGrfV">
-            <b data-page-node-id="cHzQPXyVPdR1pG187DePaa">牛肉麵</b><i data-page-node-id="qG14kDaZAazdIqx5yovkDh">Beef Noodle</i>
-          </span>
-        </button>
+      <ol class="tl">
+        <li class="tl__item reveal" style="--i:1">
+          <span class="tl__num">01</span>
+          <div class="tl__body">
+            <h3>落機 · 入境 · 拎行李</h3>
+            <p>第一航廈（T1）同第二航廈（T2）都有大量餐廳，T2 4 樓出境／入境層最集中。
+               如果已經肚餓，可以先喺機場食埋先上車。</p>
+            <div class="tl__tags"><span>T1 B1 / B4</span><span>T2 3F / 4F / B2</span></div>
+          </div>
+        </li>
 
-        <button class="cat reveal" style="--i:2" data-goto="dumpling" data-page-node-id="uUOJU03fqVGlGwDChFkUW1">
-          <img src="assets/cat-dumpling.jpg" alt="小籠湯包" loading="lazy" data-page-node-id="BT5Tv51zW7IZnjSm5NmHDi" />
-          <span class="cat__shade" data-page-node-id="petN8BBX9bpjsmdbzGzFMV"></span>
-          <span class="cat__body" data-page-node-id="O2VTBSDrHWGA7OJHdbgYl2"><b data-page-node-id="tnL9GmJsy6xFTHaBCAEHjU">小籠包</b><i data-page-node-id="Bc3xZV3GxNwMJmvHB7Lq4H">Soup Dumpling</i></span>
-        </button>
+        <li class="tl__item reveal" style="--i:2">
+          <span class="tl__num">02</span>
+          <div class="tl__body">
+            <h3>機場捷運 A1 台北車站</h3>
+            <p>搭<b>機場捷運（紫色線）</b>，普通車約 38 分鐘、直達車約 38 分鐘到 A1 台北車站。
+               車站 B1 有台鐵便當同便利店，係最平嘅落機第一餐。</p>
+            <div class="tl__tags"><span>車程 ~38 分鐘</span><span>單程 NT$150</span></div>
+          </div>
+        </li>
 
-        <button class="cat reveal" style="--i:3" data-goto="boba" data-page-node-id="EA3KJ2ZNNqLbNwb1h0d4E0">
-          <img src="assets/cat-bubble-tea.jpg" alt="珍珠奶茶" loading="lazy" data-page-node-id="wbKvC85Edj6LsdcFsc3Ofa" />
-          <span class="cat__shade" data-page-node-id="L2ns6ajbMWvBFArXuxPJqN"></span>
-          <span class="cat__body" data-page-node-id="gOJilXte4yA6eQylRBBLtG"><b data-page-node-id="iLsMadRdjdC2uui2MRwhYe">手搖飲</b><i data-page-node-id="1mS9zYH9M4FNt2X3HMJn1k">Bubble Tea</i></span>
-        </button>
+        <li class="tl__item reveal" style="--i:3">
+          <span class="tl__num">03</span>
+          <div class="tl__body">
+            <h3>轉乘捷運去南勢角站</h3>
+            <p>由台北車站轉<b>板南線（藍線）</b>或<b>淡水信義線（紅線）</b>再接<b>中和新蘆線（橘線）</b>，
+               往南勢角方向，到終點站落車。行李多嘅話，避開 17:30–19:00 下班人潮。</p>
+            <div class="tl__tags"><span>轉乘 2 次</span><span>再坐 ~25 分鐘</span></div>
+          </div>
+        </li>
 
-        <button class="cat reveal" style="--i:4" data-goto="oyster" data-page-node-id="XA7kkGLFf4GHv7Q6Bz8cNf">
-          <img src="assets/cat-oyster.jpg" alt="蚵仔煎" loading="lazy" data-page-node-id="ptDgMx13YjJjlIHDcEag3n" />
-          <span class="cat__shade" data-page-node-id="wLnAT8OYBMIhwAYp5DJVv9"></span>
-          <span class="cat__body" data-page-node-id="8dzRanEqhI4T2CGB65of1d"><b data-page-node-id="aPV9934nzKIVZznSiNr6va">蚵仔煎</b><i data-page-node-id="7otMcO7kjC7sto4qmZjaly">Oyster Omelette</i></span>
-        </button>
-
-        <button class="cat reveal" style="--i:5" data-goto="rice" data-page-node-id="KNcDS0d4mF55XRCkxQ9dLI">
-          <img src="assets/cat-luroufan.jpg" alt="滷肉飯" loading="lazy" data-page-node-id="5kbC4lOr42zr54F4q4M6T5" />
-          <span class="cat__shade" data-page-node-id="bOyPuTnE5sEOcmh2nLegMG"></span>
-          <span class="cat__body" data-page-node-id="gQuAF3SmhRgIZMlRhcg5br"><b data-page-node-id="xixlW6SG0k9anX7ESErVL3">滷肉飯</b><i data-page-node-id="9k4igHVJvrA5cVeTuegGEb">Braised Pork Rice</i></span>
-        </button>
-
-        <button class="cat reveal" style="--i:6" data-goto="tofu" data-page-node-id="VjwkBoHEwYakyjT1J4qZo5">
-          <img src="assets/cat-stinky-tofu.jpg" alt="臭豆腐" loading="lazy" data-page-node-id="53cfR76efNokjgJxrsVXpA" />
-          <span class="cat__shade" data-page-node-id="1oZXggmLFg8ebfAJEqzlrD"></span>
-          <span class="cat__body" data-page-node-id="y3ocR3pFrVCzjRThYOlozi"><b data-page-node-id="DaSzYSGqiZu2yENUbtfZXe">臭豆腐</b><i data-page-node-id="wsoBYuRwmwoPIB7dGSORfH">Stinky Tofu</i></span>
-        </button>
-
-        <button class="cat reveal" style="--i:7" data-goto="fried" data-page-node-id="XPwYH8Yz0l7r7BeCZsgrTb">
-          <img src="assets/cat-fried-chicken.jpg" alt="鹽酥雞" loading="lazy" data-page-node-id="ygPHcxfDjNrY6bO9Idt7IQ" />
-          <span class="cat__shade" data-page-node-id="tvNZBAGi6aYQ5Cy5z29Yls"></span>
-          <span class="cat__body" data-page-node-id="4L4D7SyLkFleOnPiGxn89e"><b data-page-node-id="fCB9Pd88lZywgqwzGOrn7R">鹽酥雞</b><i data-page-node-id="8Kka8Yg0C4c3YTiLZCM4B7">Fried Chicken</i></span>
-        </button>
-
-        <button class="cat reveal" style="--i:8" data-goto="snack" data-page-node-id="Wfmc8kZwl8fZalYJhVezvv">
-          <img src="assets/cat-soy-milk.jpg" alt="豆漿燒餅早餐" loading="lazy" data-page-node-id="KKvpIrF84IevdYW39fpn39" />
-          <span class="cat__shade" data-page-node-id="ocrCimeDOunBE2o4jRLTHu"></span>
-          <span class="cat__body" data-page-node-id="z0nU6mxN67OXzFGApir7La"><b data-page-node-id="k7DFUboASZwW1ewJI5cE2v">銅板點心</b><i data-page-node-id="hGUhIb1p06kgu4KdYv9H8r">Market Snacks</i></span>
-        </button>
-      </div>
+        <li class="tl__item reveal" style="--i:4">
+          <span class="tl__num">04</span>
+          <div class="tl__body">
+            <h3>南勢角站 → 圓通雅筑</h3>
+            <p>宿舍喺<b>新北市中和區工專路 26-38 號</b>（台科大華夏校區對面）。
+               出站後可以行 15 分鐘、騎 U-bike 5 分鐘（4 號出口），
+               或者搭<b>圓通接駁巴士</b>（2 號出口，約 20 分鐘一班，住宿生免費）。</p>
+            <div class="tl__tags"><span>步行 15 分鐘</span><span>U-bike 5 分鐘</span><span>接駁車 5 分鐘</span></div>
+          </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- ══════════ 精選餐廳 ══════════ -->
-  <section class="section section--tint" id="restaurants" data-page-node-id="qBey6bKrWvayww33oLbt01">
-    <div class="wrap" data-page-node-id="fh85njahg6Wln2sGn3G7dx">
-      <header class="head head--row" data-page-node-id="ZD7CU9Ep9laDnrzZEd9Ilo">
-        <div data-page-node-id="wuCEacqR4BN09KZT5BhGj1">
-          <p class="eyebrow reveal" data-page-node-id="HCy6ll0CPoCvYgHYGyKzY3">精選餐廳</p>
-          <h2 class="h2 reveal" style="--i:1" data-page-node-id="2Y78aGz33XnwdxIOVePDX3">在地人真的<br  data-page-node-id="pJxWt4JPJPAhvszxpcu8Vh"/>會去的那種。</h2>
+  <!-- ══════════ 美食清單 ─ 雙軸篩選 ══════════ -->
+  <section class="section shops" id="shops">
+    <div class="wrap">
+      <header class="shead">
+        <p class="eyebrow reveal">The List</p>
+        <h2 class="shead__title reveal" style="--i:1">美食清單</h2>
+        <p class="shead__sub reveal" style="--i:2">
+          兩套分類可以<b>同時使用</b>：先揀地區（到埗美食／近生活圈／其他），再揀種類（嘢飲／嘢食／甜品）。
+          店名同地址都可以撳，直接開 Google Map。
+        </p>
+      </header>
+
+      <div class="filters reveal" style="--i:3">
+        <div class="frow">
+          <span class="flabel">地區</span>
+          <div class="chips" id="zoneChips" role="group" aria-label="按地區篩選"></div>
         </div>
-        <p class="lead lead--tight reveal" style="--i:2" data-page-node-id="6sR58TG1jiiQT5GPDQghNl">
-          不是米其林指南的複製貼上，是巷口、市場二樓、與排了二十分鐘也甘願的那一攤。
-        </p>
-      </header>
-
-      <div class="filters reveal" style="--i:3" id="filters" role="tablist" aria-label="餐廳分類篩選" data-page-node-id="2H2KhYulCpbfvafCRUFXS0">
-        <button class="chip is-on" data-cat="all" role="tab" aria-selected="true" data-page-node-id="T8dTj1lLBcs3QkB5EJOsir">全部</button>
-        <button class="chip" data-cat="noodle" role="tab" aria-selected="false" data-page-node-id="umK0aSvsZLFpr29sEWXhv5">牛肉麵</button>
-        <button class="chip" data-cat="dumpling" role="tab" aria-selected="false" data-page-node-id="QITNVFGAouH6Jknrf0aKrG">小籠包</button>
-        <button class="chip" data-cat="boba" role="tab" aria-selected="false" data-page-node-id="z4paJy7W4swajy3gkpBocC">手搖飲</button>
-        <button class="chip" data-cat="oyster" role="tab" aria-selected="false" data-page-node-id="4UkHCScUvFJ0KEAcHIpspf">蚵仔煎</button>
-        <button class="chip" data-cat="rice" role="tab" aria-selected="false" data-page-node-id="f00UYFS8Vq1wuU9xshBpss">滷肉飯</button>
-        <button class="chip" data-cat="tofu" role="tab" aria-selected="false" data-page-node-id="Ur7yG7Rx8nn3qaAcIiiY9j">臭豆腐</button>
-        <button class="chip" data-cat="fried" role="tab" aria-selected="false" data-page-node-id="KS7uhcmKekIYXmqOGuDwTE">鹽酥雞</button>
-        <button class="chip" data-cat="snack" role="tab" aria-selected="false" data-page-node-id="Tu7FhE1IYO4CEpYJTX8xwk">銅板點心</button>
-      </div>
-
-      <div class="cards" id="cards" data-page-node-id="RJD5nKDxrBiBbXkkOPyGzy"></div>
-      <p class="cards__empty" id="cardsEmpty" hidden data-page-node-id="LdWQbbrYQ967cHhDpgolPu">這個分類還在採訪中，先看看別的？</p>
-    </div>
-  </section>
-
-  <!-- ══════════ 夜市小吃 ══════════ -->
-  <section class="section" id="night" data-page-node-id="QoIINy4uYpr7GNfvpxfRMB">
-    <div class="wrap" data-page-node-id="LwFx4VlSS3GQ7pVKXG0LqF">
-      <header class="head" data-page-node-id="p2CAaV9htZfY54mhvji0Ix">
-        <p class="eyebrow reveal" data-page-node-id="xKcVgEmljCgQX3S7BMu3XD">夜市小吃</p>
-        <h2 class="h2 reveal" style="--i:1" data-page-node-id="xKKugKOzA63GNQjCHcAv9x">天黑之後，<br  data-page-node-id="TntjotDdlYQ0ffGbDoD3DT"/>城市才開始上菜。</h2>
-        <p class="lead reveal" style="--i:2" data-page-node-id="faj56Fl37NNZszStT8u1My">
-          鐵皮屋頂下的蒸氣、油鍋的聲音、老闆喊「內用還外帶」——台北的夜晚是用這些聲音調味的。
-        </p>
-      </header>
-
-      <!-- 跑馬燈 -->
-      <div class="marquee reveal" style="--i:3" aria-hidden="true" data-page-node-id="OvzPDht8RnKiM26OZw1SWt">
-        <div class="marquee__track" data-page-node-id="uANcNXsivHcm4Vt6RoKsg8">
-          <ul class="marquee__set" data-page-node-id="zeZDOzgCrYBE3uAgCdddqf">
-            <li data-page-node-id="mgkJDjUse6nn3Wgn7A4ldf">蚵仔煎</li><li data-page-node-id="XkMMecuv5PCHg9wuJE5iZD">臭豆腐</li><li data-page-node-id="RIFevKwJmGhwSim6W72FtT">大香腸</li><li data-page-node-id="hyJBi6zkXYjWQp6hDRDAEJ">胡椒餅</li><li data-page-node-id="98A1iQQPmo6XiSAu0TFzzI">地瓜球</li>
-            <li data-page-node-id="MlR8S1FOBExo6ytPRv8s4g">鹽酥雞</li><li data-page-node-id="kJTkyaEhO6Poo2d88GfCDx">芋圓</li><li data-page-node-id="Q9OCuTDYXOQEuOHdeFEcHD">豆花</li><li data-page-node-id="8dF1iyXMPULYcFPX4l9cnG">藥燉排骨</li><li data-page-node-id="zqX95NDH3iGxTXvvJ8ximZ">花生捲冰淇淋</li>
-            <li data-page-node-id="uH7JMsEaa7U8DG2vWfJkPF">芒果冰</li><li data-page-node-id="hLqCedBqSkjLclpAiFSWf5">刈包</li><li data-page-node-id="kXb1JrVSrLKNRaWBxbJSpg">甜不辣</li><li data-page-node-id="rVIYJb7qTwsL97PkbcuhrE">豬血糕</li>
-          </ul>
-          <ul class="marquee__set" data-page-node-id="k7WXMz1ALdXWCAxvmj3rGm">
-            <li data-page-node-id="E1CN0VtczHLFmgjlgrgoe8">蚵仔煎</li><li data-page-node-id="zACJiIhSaUgDydwRrsWZ8C">臭豆腐</li><li data-page-node-id="FgMS2dMkMTd51dET9SOuhX">大香腸</li><li data-page-node-id="6FzGp3piu2goGnYn3CfVls">胡椒餅</li><li data-page-node-id="h0risk83H9lxDo3DxZAc0J">地瓜球</li>
-            <li data-page-node-id="oc8nRYFtdpTQgpqLDFl1x5">鹽酥雞</li><li data-page-node-id="dXWgzvyuG9c26CBtSEou04">芋圓</li><li data-page-node-id="xGXwitKloj8jvqOCHUOQf6">豆花</li><li data-page-node-id="F8SVNXXgF5uF8gluA0jREO">藥燉排骨</li><li data-page-node-id="OdjzRqBnSoYN9mXp4DcW6z">花生捲冰淇淋</li>
-            <li data-page-node-id="QiiGwAZWSvtCB8DnfBrMsm">芒果冰</li><li data-page-node-id="ptc94Xpx8O4dmu5GV1CCuE">刈包</li><li data-page-node-id="ptrwWMRuiJPf2lPWZy6AaN">甜不辣</li><li data-page-node-id="04hHRr7pEaj5spZUfdE1nO">豬血糕</li>
-          </ul>
+        <div class="frow">
+          <span class="flabel">種類</span>
+          <div class="chips" id="kindChips" role="group" aria-label="按種類篩選"></div>
+        </div>
+        <div class="fmeta">
+          <span class="fcount" id="resultCount">—</span>
+          <button class="btn btn--tiny" id="resetBtn" type="button">重設篩選</button>
         </div>
       </div>
 
-      <!-- 加映小圖廊 -->
-      <div class="extra reveal" style="--i:4" data-page-node-id="APLoCbiUYCEQ4QiEjvd9LV">
-        <figure class="extra__item" data-page-node-id="L6E4IANX0isYeMXA0VfsmC">
-          <img src="assets/s-skewer.jpg" alt="夜市鐵板上現烤的肉串" loading="lazy" data-page-node-id="PArtvCw4J13sVcZOB6g2QI" />
-          <figcaption data-page-node-id="66ZArulHZMW0eoZN0J1RzJ"><b data-page-node-id="waETyi2lrowHeoNWlKFryo">現烤肉串</b><span data-page-node-id="Z2TaxSGCjeDNVuyyDBnoEp">醬香混著炭火氣</span></figcaption>
-        </figure>
-        <figure class="extra__item" data-page-node-id="TFGC3wS3TQHI4mxRClZnpR">
-          <img src="assets/r-hotpot.jpg" alt="冒著熱氣的台灣麻辣鍋" loading="lazy" data-page-node-id="6GYcWvjhuwsR0zxmwDbq0f" />
-          <figcaption data-page-node-id="GXCm1x76T0pVe7Yk44YhgN"><b data-page-node-id="w4HZc0BDpbJ18n1EyjuwiZ">麻辣鴛鴦鍋</b><span data-page-node-id="dqmRtabIBBsBdXmLGDJqMK">宵夜場的壓軸</span></figcaption>
-        </figure>
-        <figure class="extra__item" data-page-node-id="sbP5TBnGwEwMkQmg1NEUFV">
-          <img src="assets/s-taro.jpg" alt="九份手工芋圓甜品" loading="lazy" data-page-node-id="CJeapHTeW6tWwWZNGHQ7XK" />
-          <figcaption data-page-node-id="NYIWLCeYKzWmCcMeyfvRF6"><b data-page-node-id="qFvujdVcfzDiyau7RDVsN5">手工芋圓</b><span data-page-node-id="upGYWPyPYphBmwiMhgpGnp">甜的那個胃還留著</span></figcaption>
-        </figure>
-        <figure class="extra__item" data-page-node-id="5gNn3BSZIKAdmXlDCrUCUk">
-          <img src="assets/s-pineapple.jpg" alt="台灣鳳梨酥伴手禮" loading="lazy" data-page-node-id="xw7UGCkuhAdzAZUKaHuFdz" />
-          <figcaption data-page-node-id="FZVFmZuocN5QQXDougJ2QR"><b data-page-node-id="2t0N3fIH1KXRmaMlb5Kw29">鳳梨酥</b><span data-page-node-id="YIh2IEIsRPxKfAmrEB0Txv">帶得走的台北味</span></figcaption>
-        </figure>
+      <div class="grid" id="cards"></div>
+
+      <div class="empty" id="empty" hidden>
+        <p>呢個組合暫時未有收錄 🙈</p>
+        <button class="btn btn--ghost" type="button" data-reset>睇返全部</button>
       </div>
-
-      <!-- 四大夜市 -->
-      <div class="markets" id="markets" data-page-node-id="W9iEqNHGCqkfsluFvGqqXc"></div>
-    </div>
-
-    <!-- 寬幅 parallax 大圖 -->
-    <div class="wide reveal" data-page-node-id="f5CxnPozbKoG5tuewaBBQS">
-      <figure class="wide__fig" data-parallax="0.14" data-page-node-id="OcWmJNAGYbxDcCzMiclVEv">
-        <img src="assets/nightmarket-wide.jpg" alt="夜市攤位前的排隊人潮與招牌燈光" loading="lazy" data-page-node-id="LFABk91CTL0XRWbZmLBtlA" />
-      </figure>
-      <p class="wide__note" data-page-node-id="Zves09dlyHqGUkXDokzBRu">士林 · 基河路　19:40</p>
     </div>
   </section>
 
-  <!-- ══════════ 互動地圖 ══════════ -->
-  <section class="section section--tint" id="map" data-page-node-id="IzWPFN7XMuTAdMZw1c61OP">
-    <div class="wrap" data-page-node-id="E6Dgj5QYyPGiuBUpfqkapo">
-      <header class="head" data-page-node-id="PafLW1Fqr4PtUqIephk6Go">
-        <p class="eyebrow reveal" data-page-node-id="G2uYTMxcuaPndTNJme2JW9">互動地圖</p>
-        <h2 class="h2 reveal" style="--i:1" data-page-node-id="8VWfkYp8faQWivGthkcAWg">點一下，<br  data-page-node-id="I7Gs6JjEg3nxeK9PFxO3DY"/>就知道該往哪走。</h2>
-        <p class="lead reveal" style="--i:2" data-page-node-id="YLM7FNewyJqVzsyhPesOXQ">
-          十個台北美食座標。點選地圖上的標記，或從右側清單挑一處，看看那裡該吃什麼、幾點去最剛好。
+  <!-- ══════════ 生活圈地圖 ══════════ -->
+  <section class="section mapsec" id="map">
+    <div class="wrap">
+      <header class="shead">
+        <p class="eyebrow reveal">Living Circle</p>
+        <h2 class="shead__title reveal" style="--i:1">生活圈地圖</h2>
+        <p class="shead__sub reveal" style="--i:2">
+          宿舍喺<b>中和南勢角</b>，搭橘線幾個站就到<b>公館台大</b>。
+          撳地圖上嘅標記，睇下每個聚落有咩食。
         </p>
       </header>
 
-      <div class="mapwrap reveal" style="--i:3" data-page-node-id="ZVdlVVsMc04GzuCPqvqFNE">
-        <!-- 地圖 -->
-        <div class="map" id="mapCanvas" data-page-node-id="pDlH42LquVDxAF0Gd0iMqu">
-          <svg class="map__svg" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-page-node-id="pBvf7mfTIUGLjeocb13i2n">
-            <defs data-page-node-id="nXCkoTmoKFaCtLYQ9erXgf">
-              <linearGradient id="gLand" x1="0" y1="0" x2="1" y2="1" data-page-node-id="Saz8tuqspQoGdJo6xYYg8e">
-                <stop offset="0%" stop-color="#fbfbfd" data-page-node-id="DENfYgmI7IFx7mu81JlFUs" />
-                <stop offset="55%" stop-color="#f2f2f5" data-page-node-id="57nBqz2sA0NvSY1N0oovs1" />
-                <stop offset="100%" stop-color="#e9e9ee" data-page-node-id="sXBvNznSTYxY8HeitMjQVa" />
+      <div class="mapgrid reveal" style="--i:3">
+        <div class="mapstage" id="mapStage">
+          <svg class="mapsvg" viewBox="0 0 1000 720" role="img" aria-label="中和南勢角至公館台大生活圈示意圖">
+            <defs>
+              <linearGradient id="gOrange" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#ffb340"/><stop offset="1" stop-color="#ff9500"/>
               </linearGradient>
-              <linearGradient id="gRiver" x1="0" y1="0" x2="0" y2="1" data-page-node-id="iW4ZDrkxyVwjkuAC76M4cU">
-                <stop offset="0%" stop-color="#cfe6f2" data-page-node-id="tgRswZx1yXtD5brXv3dPXi" />
-                <stop offset="100%" stop-color="#b7d7e8" data-page-node-id="O0uvvtPseZMY2rvSGG7z09" />
+              <linearGradient id="gGreen" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#5ac26a"/><stop offset="1" stop-color="#2fa84a"/>
               </linearGradient>
-              <pattern id="gGrid" width="50" height="50" patternUnits="userSpaceOnUse" data-page-node-id="W202kCxiYWTDi0KfQFUdr4">
-                <path d="M50 0H0V50" fill="none" stroke="#000" stroke-opacity=".035" stroke-width="1" data-page-node-id="o6QHUoHhVGFSvBfszipNwe" />
-              </pattern>
+              <linearGradient id="gPurple" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#b07cff"/><stop offset="1" stop-color="#8a5cf6"/>
+              </linearGradient>
+              <linearGradient id="gRiver" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#5fb8e6"/><stop offset="1" stop-color="#3b93c9"/>
+              </linearGradient>
             </defs>
 
-            <rect width="1000" height="720" fill="url(#gLand)" data-page-node-id="aRfSJ91BvooAtkaMvjm97U" />
-            <rect width="1000" height="720" fill="url(#gGrid)" data-page-node-id="mE55uro9fxUh843u6P0UMY" />
+            <!-- 新店溪 -->
+            <path class="river" d="M-20 430 C 180 400, 300 360, 420 330 S 640 300, 780 250 S 940 190, 1020 150"
+                  fill="none" stroke="url(#gRiver)" stroke-width="26" stroke-linecap="round" opacity=".28"/>
 
-            <!-- 行政區色塊（示意） -->
-            <g opacity=".55" data-page-node-id="SNdCRqXYiccl5LTUC5oDx6">
-              <path d="M60 90 C160 60 250 110 245 200 C240 280 150 320 90 285 C40 255 25 150 60 90 Z" fill="#eceaf6" data-page-node-id="ZI1HcW7AsXldc0Ktxxu7Ec" />
-              <path d="M300 60 C430 40 520 100 505 190 C492 270 380 300 315 255 C265 220 265 110 300 60 Z" fill="#f4ece3" data-page-node-id="COoTEMoOUGLx5UpQZjpWTr" />
-              <path d="M560 120 C690 100 800 150 790 240 C782 315 670 350 600 305 C545 270 530 165 560 120 Z" fill="#eaf1ec" data-page-node-id="IrQVCx0lex0hdOC1LCTKWV" />
-              <path d="M270 330 C400 310 500 360 490 440 C482 515 370 545 300 505 C245 472 235 375 270 330 Z" fill="#f6eee7" data-page-node-id="ycWfrvcQxW9cUgnGcrAwZf" />
-              <path d="M540 350 C680 330 790 385 780 470 C772 550 650 585 575 540 C515 502 505 392 540 350 Z" fill="#e6eef7" data-page-node-id="ouUrN1HDWzbHya317nN8bZ" />
-              <path d="M250 560 C390 540 500 590 490 670 C482 745 365 775 295 735 C240 703 220 612 250 560 Z" fill="#f2ecf5" data-page-node-id="cbpBXRWF9RV24UuDH1WUfr" />
-              <path d="M560 580 C680 565 780 610 770 680 C762 745 660 775 595 740 C545 712 530 615 560 580 Z" fill="#fdf1e6" data-page-node-id="iHQjk4JjDUiiwGrctahnQU" />
+            <!-- 中和新蘆線（橘線） -->
+            <path class="mline" d="M150 560 L232 494 L306 434 L376 372 L470 306"
+                  stroke="url(#gOrange)" />
+            <!-- 松山新店線（綠線） -->
+            <path class="mline" d="M470 306 L560 290 L642 278 L704 260"
+                  stroke="url(#gGreen)" />
+            <!-- 機場捷運 -->
+            <path class="mline mline--dash" d="M1040 -10 L880 72 L830 96"
+                  stroke="url(#gPurple)" />
+
+            <!-- 車站 -->
+            <g class="stations">
+              <g transform="translate(830 96)"><circle class="st st--purple" r="9"/><text class="stt" x="0" y="-20">台北車站 A1</text></g>
+              <g transform="translate(704 260)"><circle class="st st--green" r="9"/><text class="stt" x="0" y="-20">公館</text></g>
+              <g transform="translate(642 278)"><circle class="st st--green" r="7"/><text class="stt" x="0" y="24">台電大樓</text></g>
+              <g transform="translate(560 290)"><circle class="st st--green" r="7"/><text class="stt" x="0" y="24">古亭</text></g>
+              <g transform="translate(470 306)"><circle class="st st--both" r="9"/><text class="stt" x="0" y="-20">古亭</text></g>
+              <g transform="translate(376 372)"><circle class="st st--orange" r="7"/><text class="stt" x="0" y="24">頂溪</text></g>
+              <g transform="translate(306 434)"><circle class="st st--orange" r="7"/><text class="stt" x="0" y="24">永安市場</text></g>
+              <g transform="translate(232 494)"><circle class="st st--orange" r="8"/><text class="stt" x="0" y="24">景安</text></g>
+              <g transform="translate(150 560)"><circle class="st st--orange" r="10"/><text class="stt" x="0" y="26">南勢角</text></g>
             </g>
 
-            <!-- 河流 -->
-            <g fill="none" stroke="url(#gRiver)" stroke-linecap="round" data-page-node-id="NjF1Ca0uXjzBrqAUtcGfYz">
-              <path d="M236 -20 C214 110 300 210 250 330 C200 452 150 560 168 740" stroke-width="34" data-page-node-id="FvgCg6jWcMyBaFJue4vuoD" />
-              <path d="M1000 118 C880 130 800 214 668 236 C548 256 470 306 372 326 C320 336 280 344 252 352" stroke-width="22" data-page-node-id="E8vt8qaSMuHFOjI8RWbQMh" />
-              <path d="M0 690 C120 660 230 620 330 620" stroke-width="16" data-page-node-id="wQJRaH85aNwRhobMKWTJl3" />
-            </g>
+            <!-- 台大校園色塊 -->
+            <path class="campus" d="M742 168 h132 a10 10 0 0 1 10 10 v104 a10 10 0 0 1 -10 10 h-132 a10 10 0 0 1 -10 -10 v-104 a10 10 0 0 1 10 -10 z"/>
+            <text class="campust" x="808" y="212">台大校區</text>
+            <text class="campus2" x="808" y="240">NTU Main Campus</text>
 
-            <!-- 捷運線 -->
-            <g fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9" data-page-node-id="zRj0fWtCGbXyAFatROebHu">
-              <path d="M300 30 C300 150 330 260 420 360 C480 432 520 540 548 700" stroke="#e0393e" stroke-width="7" data-page-node-id="XbfFGani4FIpFlDpm6BVnT" />
-              <path d="M40 452 C220 436 420 452 620 442 C760 435 880 448 990 440" stroke="#0a7ec2" stroke-width="7" data-page-node-id="IQfZzqq8rVqJzcB8z1MS7y" />
-              <path d="M556 40 C566 170 600 280 660 380 C712 468 726 590 742 706" stroke="#0f9d6f" stroke-width="7" data-page-node-id="FoiOInxczwB8y3c41Hkq5e" />
-              <path d="M792 84 C860 150 878 260 856 372 C840 460 806 520 782 560" stroke="#c8902f" stroke-width="7" data-page-node-id="ZPUNfO9cX9UeVDaBsO1UXs" />
-            </g>
-
-            <!-- 捷運站點 -->
-            <g fill="#fff" stroke="#1d1d1f" stroke-width="3" opacity=".55" data-page-node-id="mNo9205QMIBM3RTYEZosJZ">
-              <circle cx="300" cy="106" r="7" data-page-node-id="LVYbUWXKYSOBAKpQMpBEWO" /><circle cx="330" cy="262" r="7" data-page-node-id="FdFjc6vgTDnTw8lDEvT0ex" />
-              <circle cx="420" cy="360" r="7" data-page-node-id="nB59rhpVOArSREGE0dcXY9" /><circle cx="548" cy="700" r="7" data-page-node-id="DRBcBiCwHyVJuBkl5t4u5k" />
-              <circle cx="232" cy="450" r="7" data-page-node-id="RBfMAn8iiwXecaJD9d9EzA" /><circle cx="452" cy="448" r="7" data-page-node-id="CoBAnMGCRaJjtZAtALU1n0" />
-              <circle cx="620" cy="442" r="7" data-page-node-id="a395FynnTcqDXv64nEhKiO" /><circle cx="840" cy="445" r="7" data-page-node-id="2gFlxwkIbAxEDkCM5MXiv6" />
-              <circle cx="580" cy="196" r="7" data-page-node-id="RdSFQCPekMTEplCtM9QVEw" /><circle cx="676" cy="422" r="7" data-page-node-id="3BEvERZBjibL5L10Lwuhcm" />
-              <circle cx="744" cy="706" r="7" data-page-node-id="xENZIL4yrecspyFF9fQaSf" /><circle cx="856" cy="372" r="7" data-page-node-id="9PDZ0fYVG712kIyCCHR62A" />
-            </g>
+            <text class="zonet" x="176" y="686">中和 · Zhonghe</text>
+            <text class="zonet" x="742" y="128">公館 · Gongguan</text>
           </svg>
 
-          <div class="map__markers" id="markers" data-page-node-id="z62DzAU9ryceNSjbhkM8Sr"></div>
-
-          <div class="map__legend" data-page-node-id="U4QGqCanu814MiqCO0QByz">
-            <span data-page-node-id="cHQqiPGUSzrDAm8QlDJQII"><i style="background:#e0393e" data-page-node-id="9pmWoMeWnqE72wbN1vXeBd"></i>淡水信義線</span>
-            <span data-page-node-id="IkI2pYmEojOf5Q3jufadZH"><i style="background:#0a7ec2" data-page-node-id="42cc5tgODJZwukyNTKZqQT"></i>板南線</span>
-            <span data-page-node-id="YW3EvHJDPnsGsoAERKoQ53"><i style="background:#0f9d6f" data-page-node-id="BIZjQQNnvbCd1HM3OkQe0i"></i>松山新店線</span>
-            <span data-page-node-id="xyWgkxXgUidLxBYDCA5syP"><i style="background:#c8902f" data-page-node-id="GrsGkKN9KdsXfcus3VwQTr"></i>文湖線</span>
-          </div>
+          <div class="markers" id="markers"></div>
         </div>
 
-        <!-- 側欄：清單 + 詳情 -->
-        <aside class="panel" data-page-node-id="TpIyQZGN7WhxL4XWz1peUA">
-          <div class="panel__list" id="spotList" aria-label="美食景點清單" data-page-node-id="gICPeqVnJ1l7ormNKaQRRx"></div>
-          <div class="panel__detail" id="spotDetail" data-page-node-id="CSupnarN7HCyeZZAgTEvzT"></div>
+        <aside class="panel">
+          <div class="panel__head">
+            <h3>聚落速覽</h3>
+            <p>撳任何一個，睇下有咩必食。</p>
+          </div>
+          <div class="panel__list" id="spotList"></div>
+          <div class="panel__detail" id="spotDetail"></div>
         </aside>
       </div>
     </div>
   </section>
 
-  <!-- ══════════ 結語 ══════════ -->
-  <section class="quote" data-page-node-id="RKKh4EL856PW3o4ZPH2ulY">
-    <div class="quote__bg" data-parallax="0.18" data-page-node-id="xoWEaIw6VEDQCpkoXdEetZ">
-      <img src="assets/yongkang.jpg" alt="永康街早晨的街景" loading="lazy" data-page-node-id="oHQfclLlo1BHZM8dFfHecM" />
+  <!-- ══════════ 住宿生存術 ══════════ -->
+  <section class="section tips" id="tips">
+    <div class="wrap">
+      <header class="shead">
+        <p class="eyebrow reveal">Survival Guide</p>
+        <h2 class="shead__title reveal" style="--i:1">住宿生存術</h2>
+        <p class="shead__sub reveal" style="--i:2">住得耐就知嘅六件事。</p>
+      </header>
+
+      <div class="tipgrid">
+        <article class="tip reveal" style="--i:1">
+          <span class="tip__ico" aria-hidden="true">🍜</span>
+          <h3>樓下就係戰場</h3>
+          <p>宿舍樓下有<b>萊爾富</b>同<b>全聯</b>，宵夜同補貨唔使出遠門。行去<b>景新街</b>同<b>華新街</b>都係十幾分鐘，南洋料理密度全台最高。</p>
+        </article>
+
+        <article class="tip reveal" style="--i:2">
+          <span class="tip__ico" aria-hidden="true">🚇</span>
+          <h3>南勢角係橘線尾站</h3>
+          <p>好處：一定有位坐。壞處：去台大要轉線。去公館台大約 20 分鐘，計好時間先出門。</p>
+        </article>
+
+        <article class="tip reveal" style="--i:3">
+          <span class="tip__ico" aria-hidden="true">🚌</span>
+          <h3>接駁車要睇時間表</h3>
+          <p><b>圓通接駁巴士</b>由南勢角站 2 號出口開出，約 20 分鐘一班，住宿生免費。錯過咗就行 15 分鐘或者搵 U-bike。</p>
+        </article>
+
+        <article class="tip reveal" style="--i:4">
+          <span class="tip__ico" aria-hidden="true">🎓</span>
+          <h3>學生證要隨身帶</h3>
+          <p>公館商圈好多店<b>憑學生證減 NT$10–20</b>，一餐慳一杯珍奶錢，一個學期就係幾餐。</p>
+        </article>
+
+        <article class="tip reveal" style="--i:5">
+          <span class="tip__ico" aria-hidden="true">🍲</span>
+          <h3>趕時間就食校內</h3>
+          <p>台大校內<b>小福樓</b>、<b>小小福</b>同水源市場係懶人恩物，人均 NT$80–120 就食得飽。</p>
+        </article>
+
+        <article class="tip reveal" style="--i:6">
+          <span class="tip__ico" aria-hidden="true">🕐</span>
+          <h3>宵夜要睇營業時間</h3>
+          <p>南勢角陽春麵開到凌晨 1 點、珊珊臭豆腐開到 3 點；但華新街多數<b>下晝就收</b>，晏覺起身就冇得食。</p>
+        </article>
+      </div>
     </div>
-    <div class="quote__inner wrap" data-page-node-id="Ks0JGwmXAAe6G3ypHhFpI4">
-      <blockquote class="reveal" data-page-node-id="YAdIS0JDRpt4RQ2tlpOBFE">
-        台北的味道，從來不在菜單上，<br  data-page-node-id="KgO3r6tV7kIThrS5RQZHfW"/>而在人與人之間。
+  </section>
+
+  <!-- ══════════ QUOTE ══════════ -->
+  <section class="quote">
+    <div class="quote__media stage" id="quoteStage">
+      <img src="assets/hero-nightmarket.jpg" alt="夜市裡蒸騰的香氣" />
+    </div>
+    <div class="quote__scrim" aria-hidden="true"></div>
+    <div class="wrap quote__inner">
+      <blockquote class="reveal">
+        「宿舍唔係只係瞓覺嘅地方。<br />認識一座城市，由認識樓下嗰碗麵開始。」
       </blockquote>
-      <p class="reveal" style="--i:1" data-page-node-id="HnDPIhDaSB4PLYfq2xgHee">— 寫給每一個願意為一餐排隊的人</p>
+      <p class="quote__by reveal" style="--i:1">— 圓通食堂 · 寫畀每一位啱啱落機嘅你</p>
     </div>
   </section>
 
 </main>
 
-<!-- ══════════ 頁尾 ══════════ -->
-<footer class="foot" data-page-node-id="hbVgwQ8nhghsX2BLUzouvg">
-  <div class="wrap" data-page-node-id="ognQXoXBa1ZVCJ50Hb48cf">
-    <div class="foot__top" data-page-node-id="hmLUcIttWjOrm6jLqrMQDZ">
-      <div class="foot__brand" data-page-node-id="8bQXCxjHyGuN3B3eZh92v0">
-        <span class="nav__mark" aria-hidden="true" data-page-node-id="LFOYNVuiiASciSJBIQrJJz"></span>
-        <p data-page-node-id="nR2DUvc1iFw3m1ACZJ5MgT"><b data-page-node-id="yC8N0MW43vtxGsSvf9xKXg">台北味</b> <i data-page-node-id="I2xTAqiHrdILbDvirv1tzf">Taipei Bites</i></p>
-        <small data-page-node-id="9byhqeJWmoiysTiBDCAF7S">一座城市的味覺索引。每天早上七點出發，深夜十一點收工。</small>
-      </div>
-      <div class="foot__cols" data-page-node-id="dxEcmsm3qMMdCWr0SOm1LP">
-        <div data-page-node-id="aODpSB6XUGaQDmrbNsMsrC">
-          <h4 data-page-node-id="jLqVjKuaoUT0bu2BbhixNm">探索</h4>
-          <a href="#categories" data-page-node-id="CBcZXYEtspcCF7b4V3fNpS">味覺分類</a>
-          <a href="#restaurants" data-page-node-id="kvDaiwhdUJDfTEAFn7GlsH">精選餐廳</a>
-          <a href="#night" data-page-node-id="1BDlHacjSFA7maYtiWl37B">夜市小吃</a>
-          <a href="#map" data-page-node-id="FV4Y1WtMGOy1TH7R6rA0up">美食地圖</a>
-        </div>
-        <div data-page-node-id="i56BevZ3dSDepjSh1Xgv9u">
-          <h4 data-page-node-id="N4ZPDK6U4JkZeunHwBOEhw">關於</h4>
-          <a href="#top" data-page-node-id="sgG3siRgyqswE1QPDawFO7">編輯團隊</a>
-          <a href="#top" data-page-node-id="YERhezexGbSvgFA9EQVhwM">收錄標準</a>
-          <a href="#top" data-page-node-id="TshpvljFSyQbJi6ttInYML">店家合作</a>
-          <a href="#top" data-page-node-id="XQZrot2KNS0Ufi75fUiQLB">意見回饋</a>
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <span class="nav__mark" aria-hidden="true"></span>
+        <div>
+          <b>圓通食堂</b>
+          <p>台大圓通雅筑國際學舍 · 生活美食指南</p>
         </div>
       </div>
+      <nav class="foot__nav" aria-label="頁尾選單">
+        <a href="#route">到埗交通</a>
+        <a href="#shops">美食清單</a>
+        <a href="#map">生活圈地圖</a>
+        <a href="#tips">住宿生存術</a>
+      </nav>
     </div>
-    <div class="foot__bottom" data-page-node-id="BzMtXFM5JwZDPYysVC9U2H">
-      <p data-page-node-id="NwxYTh108odeQxf7auca7j">© 2026 台北味 Taipei Bites．示範作品</p>
-      <p data-page-node-id="Ka4GIKYuLwHHJEbgFi36cV">營業時間與菜單以店家現場公告為準。圖片來源：Wikimedia Commons（CC 授權）。</p>
+
+    <div class="foot__note">
+      <p>宿舍地址：<b>235 新北市中和區工專路 26-38 號</b>（台科大華夏校區對面）· 最近捷運：<b>橘線南勢角站</b></p>
+      <p class="foot__dis">營業時間與價錢以店家現場公告為準，出發前建議先撳入 Google Map 確認。推薦指數為本指南依網路評價與人氣整理之主觀參考。</p>
     </div>
   </div>
 </footer>
