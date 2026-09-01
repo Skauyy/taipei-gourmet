@@ -13,6 +13,7 @@
   --accent:#ff9500;   --accent-2:#ff6a2c;   --accent-3:#ffc266;
   --warm:#fff6ec;
   --star:#ff9f0a;
+  --ok:#0f9d58;  --bad:#d63b34;
   --nav-bg:rgba(255,255,255,.72);
   --scrim-1:rgba(0,0,0,.30);
   --scrim-2:rgba(0,0,0,.72);
@@ -37,6 +38,7 @@ html[data-theme="dark"]{
   --accent:#ffb340;   --accent-2:#ff8f3c;   --accent-3:#ffd08a;
   --warm:#241a10;
   --star:#ffc44d;
+  --ok:#3ddc91;  --bad:#ff6f6b;
   --nav-bg:rgba(11,11,13,.66);
   --scrim-1:rgba(0,0,0,.42);
   --scrim-2:rgba(0,0,0,.80);
@@ -337,8 +339,8 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
 /* ══════════ FILTERS ══════════ */
 .shops{ background:var(--paper-2); }
 .filters{
-  display:grid; gap:14px;
-  padding:20px clamp(18px,3vw,26px);
+  display:grid; gap:12px;
+  padding:17px clamp(18px,3vw,26px);
   border-radius:var(--r-l);
   background:var(--card); border:1px solid var(--line);
   box-shadow:var(--sh-1);
@@ -346,6 +348,8 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
   position:sticky; top:calc(var(--nav-h) + 10px); z-index:60;
 }
 .frow{ display:flex; align-items:center; gap:14px; }
+.frow--mixed{ flex-wrap:wrap; gap:10px 14px; }
+.frow--mixed .chip--now{ margin-left:auto; }
 .flabel{
   flex:0 0 auto; width:44px;
   font-size:11.5px; font-weight:700; letter-spacing:.1em;
@@ -425,6 +429,28 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
   color:rgba(255,255,255,.72); text-transform:uppercase;
 }
 
+/* Dcard 宿舍攻略推薦徽章 */
+.card__dc{
+  position:absolute; bottom:12px; right:12px;
+  padding:6px 11px; border-radius:99px;
+  font-size:10.5px; font-weight:750; letter-spacing:.06em;
+  background:#0f9d58; color:#fff;
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 4px 14px rgba(0,0,0,.3);
+}
+
+/* 排序 chip 箭頭 */
+.chip--sort .arw{
+  font-size:12px; font-weight:800; line-height:1;
+  margin-left:1px; min-width:9px; text-align:center;
+}
+.chip--now .n{
+  font-variant-numeric:tabular-nums; letter-spacing:.02em;
+  padding-left:6px; margin-left:2px; border-left:1px solid var(--line);
+}
+.chip--now.is-on .n{ border-left-color:color-mix(in srgb,var(--paper) 34%,transparent); }
+.chip--now.is-on .dot{ background:#2fd07a; }
+
 .card__body{ padding:20px 20px 8px; display:flex; flex-direction:column; gap:12px; flex:1; }
 .card__title{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .card__name{
@@ -461,6 +487,39 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
   0%,100%{ box-shadow:var(--sh-1); }
   18%{ box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 62%,transparent), var(--sh-3); }
   60%{ box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 32%,transparent), var(--sh-2); }
+}
+
+/* 地址列 + 營業狀態 */
+.card__addrrow{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+}
+.card__addrrow .card__addr{ flex:1 1 auto; min-width:0; }
+
+.ostate{
+  flex:0 0 auto; display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px; border-radius:99px;
+  font-size:11px; font-weight:700; letter-spacing:.02em; white-space:nowrap;
+  border:1px solid var(--line-2); background:var(--card-2); color:var(--ink-3);
+}
+.ostate i{
+  width:6px; height:6px; border-radius:50%;
+  background:currentColor; flex:0 0 auto;
+}
+.ostate em{ font-style:normal; }
+.ostate[data-st="open"]{
+  color:var(--ok);
+  border-color:color-mix(in srgb,var(--ok) 44%,transparent);
+  background:color-mix(in srgb,var(--ok) 13%,transparent);
+}
+.ostate[data-st="open"] i{ animation:opulse 2.2s var(--ease-2) infinite; }
+.ostate[data-st="closed"]{
+  color:var(--bad);
+  border-color:color-mix(in srgb,var(--bad) 40%,transparent);
+  background:color-mix(in srgb,var(--bad) 12%,transparent);
+}
+@keyframes opulse{
+  0%,100%{ opacity:1;   box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 50%,transparent); }
+  55%    { opacity:.72; box-shadow:0 0 0 5px color-mix(in srgb,var(--ok) 0%,transparent); }
 }
 
 .card__addr{
@@ -514,7 +573,6 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
 .lk:hover{ transform:translateY(-2px); }
 .lk--map:hover{ background:#0f9d58; border-color:#0f9d58; color:#fff; }
 .lk--yt:hover{ background:#ff0033; border-color:#ff0033; color:#fff; }
-.lk--full{ margin-left:auto; }
 
 .empty{ text-align:center; padding:60px 20px; }
 .empty p{ font-size:17px; color:var(--ink-2); margin-bottom:20px; }
@@ -717,7 +775,9 @@ html[data-theme="light"] .themebtn__moon{ display:none; }
   .zonet{ font-size:30px; }
   .mk__label{ font-size:10.5px; padding:3px 8px; }
   .card__foot{ flex-wrap:wrap; }
-  .lk--full{ margin-left:0; }
+  .frow--mixed .chip--now{ margin-left:0; }
+  .card__addrrow{ flex-direction:column; align-items:stretch; gap:8px; }
+  .card__addrrow .ostate{ align-self:flex-start; }
 }
 @media (max-width:520px){
   .hero{ min-height:92svh; }
