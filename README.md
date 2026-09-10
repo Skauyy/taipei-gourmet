@@ -1,8 +1,16 @@
-# Taipei Gourmet · 圓通食堂
+# 台灣美食 · Taiwan Gourmet
 
-A bilingual food field guide for the Yuantong dorm and NTU neighborhoods. The website is plain HTML, CSS and JavaScript; no build step or production dependencies.
+A bilingual Taipei/New Taipei food guide, including Yuantong/NTU daily eats and current and former Bib Gourmand recipients. Plain HTML, CSS and JavaScript; no runtime build step or production dependencies.
 
-## Preview locally
+## Website
+
+Published with GitHub Pages from the root of `main`:
+
+https://skauyy.github.io/taipei-gourmet/
+
+The display name is 台灣美食. The repository and existing URL are intentionally unchanged.
+
+For a local preview:
 
 ```sh
 python -m http.server 4173
@@ -10,26 +18,51 @@ python -m http.server 4173
 
 Open `http://localhost:4173`.
 
-## Website
+- **194 entries**: 88 original guide entries plus 106 additional, nonduplicated Bib Gourmand records.
+- **112 Bib Gourmand venue records** across Taipei/New Taipei: 55 in the 2026 selection and 57 former-only within this geographic scope.
+- Independently combine award status, city, neighborhood, food/drink/dessert and name/address/signature search.
+- Nine-at-a-time browsing, price/recommendation sorting, accessible address links and neighborhood map. Unknown prices/ratings sort last in either direction.
+- Open-now is an **Asia/Taipei schedule estimate**, not live availability. New entries without verified schedules stay unknown and are excluded from open-now results.
+- Paper-and-ink visual design, deliberate motion, persistent light/dark and motion settings, and live system reduced-motion support.
 
-- Paper-and-ink editorial layout with food-photo collages and four neighborhood shortcuts.
-- All 88 original guide entries, with intersecting multi-select area/category filters, text search, price/recommendation sorting and nine-at-a-time browsing.
-- Search covers restaurant names, addresses and signature dishes.
-- Open-now badges estimate availability from the stored schedule in **Asia/Taipei**, regardless of the visitor's timezone. They are not live store-status reports.
-- Keyboard-accessible address links and map selections. A map selection clears incompatible filters and reveals/focuses the requested entry.
-- Light/dark themes, a persistent animation-pause control, and live support for the system's reduced-motion preference. The page never waits behind a loading overlay.
+## Award evidence and branch matching
 
-`app.js` owns the restaurant data. The hero statistics and area counts derive from that data. Fonts use Google Fonts with local serif/CJK fallbacks; photos and other website assets are local. Without JavaScript, editorial content, arrival notes and the PowerPoint download remain available, but interactive listings require JavaScript.
+`data/research/taipei-bib.json` and `new-taipei-bib.json` contain reviewed records. `data/bib-gourmand.json` is the combined public dataset; the adjacent `.js` file loads it without network APIs, including when opened locally.
+
+Coverage: Taipei editions 2018–2026; New Taipei 2025–2026, starting with its inaugural selection. Each listed award year has a citation. The [research notes](data/research/taipei-bib-sources.md) distinguish official annual lists from dated complete reporting and document address/branch decisions.
+
+Important constraints:
+
+- Award years are not interpolated between first and latest appearances.
+- A chain's award does not apply to every branch. The airport 小王煮瓜 and 雙月 entries are not marked Bib Gourmand.
+- 公館金雞園 is not the awarded 永康街好公道金雞園.
+- 鼎泰豐194號信義本店 (2018–2022) and 277號新生店 (2023–2026) are separate records. The old flagship is now takeaway-only.
+- Historical inclusion does not establish present operation. Taipei records that moved outside the scope are not marked current in Taipei/New Taipei.
+- Existing guide prices and subjective scores are labelled as estimates, not Michelin scores. Missing data on newly researched entries is left unknown, not fabricated.
+
+To regenerate reviewed data bundles:
+
+```sh
+python scripts/build-data.py --verified-on 2026-09-10
+```
+
+This command validates records but does **not** recheck web sources. Change the verification date only after actually checking the sources. Update research, branch mappings, tests and the deck together when adding an edition.
+
+## Restaurant photos
+
+There is no keyword/category image fallback. `data/restaurant-photos.json` explicitly maps three verified, reusable photographs to **阜杭豆漿、永康牛肉麵、藍家割包**. Each carries its source, author, licence, capture year and modification notice. Photo credits are visible on the cards; historical photos are labelled with their dates.
+
+Every other restaurant is text-only until a photograph's exact venue/branch and reuse rights are verified. Existing neighborhood/atmosphere illustrations are clearly separated from restaurant records. See [image licences](assets/restaurants/README.md). The PowerPoint uses only the verified photo allowlist.
 
 ## PowerPoint
 
-[Download the editable 10-slide deck](presentation/Taipei-Gourmet.pptx).
+[Download the editable 10-slide deck](presentation/Taiwan-Gourmet.pptx).
 
-The deck is also linked from the website. It uses native editable text, shapes and photographs, rather than screenshots. See [presentation instructions](presentation/README.md) to regenerate it or validate/render slides. Commit an updated `presentation/Taipei-Gourmet.pptx` whenever rebuilding the published download.
+See [presentation instructions](presentation/README.md) for rebuilding, validation and fonts. Commit the generated deck when changing the published download.
 
-## Checks
+## Tests
 
-Node.js 18+; no package installation needed:
+Node.js 18+, no package installation:
 
 ```sh
 node --check app.js
@@ -37,20 +70,6 @@ node --test tests/*.test.cjs
 TZ=America/Los_Angeles node --test tests/*.test.cjs
 ```
 
-The tests cover retained guide data, Taipei clock semantics, overnight hours, split shifts, search/filter intersections, image paths, the presentation snapshot and local download links.
+Tests cover annual counts/citations, branch exclusions, deduplication, photo allowlisting, unknown data, combined filters, schedule edge cases, the presentation snapshot and local links. Browser regression checks should additionally cover pagination, sorting unknown values, source disclosure, theme/motion persistence, menu keyboard behavior and widths 320/390/768/1024/1440px.
 
-For browser regression checks:
-
-1. Check the initial nine cards, load more, search, no-result state and reset.
-2. Combine areas/categories and reverse both price and recommendation sorting.
-3. With search and open-now filters active, jump to a restaurant from the map. It must become visible and receive focus.
-4. Check the menu at narrow widths: navigation, Escape, focus leaving the menu and desktop resize must close it.
-5. Reload both theme and animation settings. Changing system reduced motion while the page is open must stop decorative motion.
-6. Check widths 320, 390, 768, 1024 and 1440 px. Only the small-screen map should scroll sideways, not the page.
-7. Run accessibility checks in light and dark themes and verify visible keyboard focus.
-
-## Data and images
-
-Existing restaurant descriptions, prices, schedules and recommendation scores are retained, not freshly researched. Scores are guide opinions, not live Google ratings. Check current shop details before traveling. The original guide credits some dorm recommendations to the Dcard article named in the website footer.
-
-Existing photographs are reused as **illustrations**, not authenticated images of every listed restaurant. Original photo authorship/licensing was not supplied; verify usage rights before redistribution. The map is a neighborhood diagram, not turn-by-turn navigation.
+Fonts use Google Fonts with local serif/CJK fallbacks. Editorial content, arrival notes, source-data links and the PowerPoint remain available without JavaScript; interactive listings require it.

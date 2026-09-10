@@ -91,7 +91,7 @@ html[data-theme="dark"] .themebtn__sun { display: block; }
 .hero__collage { position: relative; height: 535px; }
 .hero__plate { position: absolute; top: 13px; left: 11%; width: 75%; height: 446px; border-radius: 47% 47% 3px 3px; overflow: hidden; transform: rotate(3deg); background: var(--paper-3); }
 .hero__plate img { width: 100%; height: 100%; object-fit: cover; scale: 1.12; translate: 0 var(--py, 0px); }
-.hero__plate figcaption { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 15px 18px; background: var(--forest); color: #f5f1e8; font-size: 8px; letter-spacing: .12em; }
+.hero__plate figcaption { position: absolute; bottom: 0; left: 0; right: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 12px 14px; background: var(--forest); color: #f5f1e8; font-size: 9px; letter-spacing: .03em; }
 .hero__stamp { position: absolute; top: 0; right: -3px; z-index: 2; width: 113px; height: 113px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; border: 1px solid #f5f1e8; outline: 6px solid #c53c26; border-radius: 50%; background: #c53c26; color: #fff3e5; transform: rotate(13deg); }
 .hero__stamp span { font-size: 8px; letter-spacing: .1em; }
 .hero__stamp b { font-size: 22px; font-weight: 500; letter-spacing: .1em; }
@@ -213,6 +213,57 @@ html[data-theme="dark"] .themebtn__sun { display: block; }
 .load-more { margin-top: 40px; text-align: center; }
 .load-more p { margin-top: 14px; font-size: 10px; color: var(--ink-2); }
 .card.is-flash { outline: 3px solid var(--accent); outline-offset: 4px; }
+
+/* Bib Gourmand provenance and restaurant-specific photography */
+.bib-feature { background: var(--forest); color: #f5f1e8; }
+.bib-feature__intro { display: flex; align-items: center; justify-content: space-between; gap: 50px; }
+.bib-feature .eyebrow { color: #edb195; }
+.bib-feature h2 { font-size: clamp(30px, 3.3vw, 48px); font-weight: 500; line-height: 1.4; letter-spacing: -.04em; }
+.bib-feature h2 em { color: #edb195; font-style: normal; }
+.bib-feature__intro p:not(.eyebrow) { color: #d1d7cb; font-size: 13px; line-height: 1.9; margin-top: 22px; }
+.bib-feature__stats { display: flex; gap: 60px; }
+.bib-feature__stats > div { border-left: 1px solid #587066; padding-left: 32px; }
+.bib-feature__stats b { display: block; font-family: var(--display); font-size: 76px; font-weight: 500; line-height: 1; }
+.bib-feature__stats div > span { display: block; margin-top: 12px; font-size: 11px; color: #d1d7cb; }
+.bib-feature__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 30px; margin-top: 32px; }
+.bib-feature .text-link { border-color: #87988a; }
+.bib-method { margin-top: 32px; border-top: 1px solid #587066; padding-top: 18px; font-size: 11px; color: #d1d7cb; }
+.bib-method summary { cursor: pointer; color: #f5f1e8; padding: 5px 0; }
+.bib-method p { line-height: 1.9; margin-top: 14px; }
+.bib-method ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 25px; margin-top: 20px; }
+.bib-method a { text-decoration: underline; text-underline-offset: 4px; }
+.bib-method a:hover { color: #fff; }
+.card__masthead { padding: 15px 20px; display: flex; gap: 12px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); font-size: 9px; color: var(--ink-2); }
+.card__index { margin-right: auto; color: var(--accent); font-family: var(--display); font-size: 24px; line-height: 1; }
+.card--text .card__name { font-size: 20px; }
+.card__foot { display: flex; flex-wrap: wrap; gap: 5px 15px; }
+.card__photo-status, .card__guide-rating { font-size: 10px; color: var(--ink-2); line-height: 1.7; }
+.card__photo-status { padding-top: 12px; border-top: 1px dashed var(--line); }
+.photo-credit { display: flex; flex-wrap: wrap; gap: 4px 9px; padding: 10px 20px; font-size: 9px; line-height: 1.6; color: var(--ink-2); border-bottom: 1px solid var(--line); }
+.photo-credit > span:first-child { flex-basis: 100%; }
+.photo-credit a { text-decoration: underline; text-underline-offset: 3px; }
+.bib-badge { display: inline-block; color: #fff9ef; background: #b83724; font-size: 10px; letter-spacing: .04em; padding: 6px 10px; }
+.bib-badge--past { color: var(--ink); border: 1px solid var(--line-2); background: var(--card-2); }
+.bib-evidence { color: var(--ink-2); font-size: 10px; line-height: 1.8; margin-top: 8px; }
+.bib-evidence summary { cursor: pointer; padding-block: 5px; color: var(--ink); }
+.bib-evidence p { margin-top: 8px; }
+.bib-evidence ul { margin-top: 10px; display: grid; gap: 8px; }
+.bib-evidence a { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.bib-evidence a:hover { color: var(--accent); }
+@media (max-width: 900px) {
+  .bib-feature__intro { align-items: flex-start; gap: 35px; }
+  .bib-feature__stats { gap: 25px; }
+  .bib-feature__stats > div { padding-left: 20px; }
+  .bib-feature__stats b { font-size: 56px; }
+}
+@media (max-width: 600px) {
+  .bib-feature__intro { flex-direction: column; }
+  .bib-feature__stats { width: 100%; justify-content: space-between; }
+  .bib-feature__stats > div { padding-left: 15px; }
+  .bib-feature__stats b { font-size: 58px; }
+  .bib-method ul { grid-template-columns: 1fr; }
+  .bib-feature__actions { gap: 16px; }
+}
 
 /* Arrival notes */
 .route .wrap { display: grid; grid-template-columns: .8fr 1.2fr; gap: 80px; }

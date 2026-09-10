@@ -2,6 +2,7 @@
 """Validate OOXML and optionally render a contact sheet with local LibreOffice."""
 import argparse
 import io
+import hashlib
 import json
 import posixpath
 import re
@@ -40,8 +41,11 @@ with zipfile.ZipFile(args.deck) as z:
             if resolved not in names: missing.append((n,target))
     assert not missing, missing
     images=[n for n in names if n.startswith('ppt/media/')]
+    photo_manifest = json.loads((Path(__file__).resolve().parents[1] / 'data/restaurant-photos.json').read_text())
+    allowed_hashes = {hashlib.sha256((Path(__file__).resolve().parents[1] / photo['src']).read_bytes()).hexdigest() for photo in photo_manifest.values()}
     for n in images:
         with Image.open(io.BytesIO(z.read(n))) as im: im.verify()
+        assert hashlib.sha256(z.read(n)).hexdigest() in allowed_hashes, f'Unverified restaurant photograph: {n}'
     counts=[]
     for n in slides:
         root=ET.fromstring(z.read(n))
@@ -49,7 +53,9 @@ with zipfile.ZipFile(args.deck) as z:
         assert counts[-1]['text_runs']>=8
     notes=[n for n in names if re.fullmatch(r'ppt/notesSlides/notesSlide\d+\.xml',n)]
     assert len(notes)==10
-    for n in notes: assert '並非即時' in ''.join(ET.fromstring(z.read(n)).itertext())
+    for n in notes:
+        note_text = ''.join(ET.fromstring(z.read(n)).itertext())
+        assert '資料來源' in note_text and '必比登' in note_text and 'CC BY-SA 4.0' in note_text
 
 prs=Presentation(args.deck)
 assert abs(prs.slide_width/prs.slide_height-16/9)<.00001
@@ -65,6 +71,9 @@ report['guide_counts']={'entries':len(data['shops']),'kinds':dict(Counter(x['k']
 assert report['guide_counts']['entries']==88
 assert report['guide_counts']['zones']=={'arrival':13,'yt':41,'ntu':22,'other':12}
 assert report['guide_counts']['kinds']=={'food':63,'drink':15,'dessert':10}
+bib_data=json.loads((Path(__file__).resolve().parents[1]/'data/bib-gourmand.json').read_text())
+report['bib_collection']={'records':len(bib_data['restaurants']),'current':sum(x['bib']['current'] for x in bib_data['restaurants']),'latest_edition':bib_data['latestEdition']}
+report['venue_photo_allowlist']='pass'
 if args.preview:
     import pypdfium2 as pdfium
     assert shutil.which('libreoffice'), 'Install LibreOffice Impress to render previews'
@@ -80,12 +89,12 @@ if args.preview:
     for i in range(len(pdf)):
         page=pdf[i]
         assert abs(page.get_width()/page.get_height()-16/9)<.001
-        bitmap=page.render(scale=1.5)
+        bitmap=page.render(scale=2)
         image=bitmap.to_pil()
         image.save(render_dir/f'slide-{i+1:02d}.png')
         x=20+(i%2)*820; y=20+(i//2)*488
         sheet.paste(image.resize((thumb_w,thumb_h),Image.Resampling.LANCZOS),(x,y))
-        draw.text((x,y+457),f'{i+1:02d}  /  TAIPEI GOURMET',fill='#183E35')
+        draw.text((x,y+457),f'{i+1:02d}  /  TAIWAN GOURMET',fill='#183E35')
         textpage=page.get_textpage(); extracted=textpage.get_text_range()
         assert len(extracted)>80
         assert '\ufffd' not in extracted

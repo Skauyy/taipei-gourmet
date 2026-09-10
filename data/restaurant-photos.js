@@ -1,0 +1,41 @@
+window.RESTAURANT_PHOTOS = {
+  "阜杭豆漿": {
+    "src": "assets/restaurants/fuhang.jpg",
+    "venue": "阜杭豆漿",
+    "alt": "阜杭豆漿在華山市場的鹹豆漿，2024 年 3 月照片",
+    "year": 2024,
+    "author": "Hauskyg YWICAORP",
+    "license": "CC0 1.0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:TW_TP_%E5%8F%B0%E5%8C%97_Taipei_%E8%8F%AF%E5%B1%B1%E5%B8%82%E5%A0%B4_HauShan_Market_Food_Court_%E9%98%9C%E6%9D%AD%E8%B1%86%E6%B5%86%E5%BA%97_Fu_Hang_Soy_Milk_Congee_Breakfast_shop_March_2024_R12S_132.jpg",
+    "verification": "Commons description explicitly names Fu Hang Soy Milk in Huashan Market; photograph and camera location were reviewed.",
+    "changes": "Resized; may be cropped by the page layout.",
+    "verifiedOn": "2026-09-10"
+  },
+  "永康牛肉麵": {
+    "src": "assets/restaurants/yongkang.jpg",
+    "venue": "永康牛肉麵",
+    "alt": "永康牛肉麵的牛肉麵，2006 年照片，並非現在的菜單或份量保證",
+    "year": 2006,
+    "author": "Minghong",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yong_Kang_Beef_Noodle_1.jpg",
+    "verification": "Commons description identifies Taipei Yong Kang Beef Noodle, links the photographer's Flickr source, and records the camera location in the Yongkang/Jinshan South Road area.",
+    "changes": "Resized; may be cropped by the page layout. This image adaptation remains under CC BY-SA 4.0.",
+    "verifiedOn": "2026-09-10"
+  },
+  "藍家割包": {
+    "src": "assets/restaurants/lan-jia.jpg",
+    "venue": "藍家割包",
+    "alt": "公館藍家割包提供的割包，2007 年照片",
+    "year": 2007,
+    "author": "竹筍弟弟 / JeanHavoc",
+    "license": "Copyrighted free use",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:GeBao.JPG",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:GeBao.JPG",
+    "verification": "Photographer's source statement explicitly says the pictured snack was provided by Gongguan Lan Jia Guabao, and grants unrestricted reuse.",
+    "changes": "Resized from the Commons preview; may be cropped by the page layout.",
+    "verifiedOn": "2026-09-10"
+  }
+};

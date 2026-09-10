@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Taipei Gourmet 圓通食堂 — 一路食到台大</title>
-<meta name="description" content="由桃園機場到圓通雅筑國際學舍，一路吃到南勢角、華新街與公館台大。88 間店舖、推薦指數、人均台幣、Google Map 與 YouTube 食評一次到位。" />
+<title>台灣美食 — 台北・新北日常與歷屆必比登指南</title>
+<meta name="description" content="台灣美食雙北版：圓通宿舍、台大、公館日常美食，與台北、新北現在及歷屆必比登餐廳。逐項列出入選年份與來源，只使用可核實及授權的店家照片。" />
 <meta name="theme-color" content="#f5f1e8" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,13 +18,13 @@
 <!-- ══════════ 進度條 + 導覽列 ══════════ -->
 <header class="nav" id="nav">
   <div class="nav__inner">
-    <a class="nav__brand" href="#top" aria-label="圓通食堂 首頁">
+    <a class="nav__brand" href="#top" aria-label="台灣美食 首頁">
       <span class="nav__mark" aria-hidden="true">食</span>
-      <span class="nav__name">圓通食堂<i>Taipei&nbsp;Gourmet</i></span>
+      <span class="nav__name">台灣美食<i>Taiwan&nbsp;Gourmet</i></span>
     </a>
 
     <nav class="nav__links" aria-label="主選單">
-      <a href="#route" data-nav="route">到埗交通</a>
+      <a href="#bib" data-nav="bib">必比登</a>
       <a href="#shops" data-nav="shops">美食清單</a>
       <a href="#map" data-nav="map">生活圈地圖</a>
       <a href="#tips" data-nav="tips">住宿生存術</a>
@@ -48,6 +48,7 @@
   <div class="nav__progress"><i id="progress"></i></div>
 
   <div class="nav__sheet" id="sheet">
+    <a href="#bib">必比登</a>
     <a href="#route">到埗交通</a>
     <a href="#shops">美食清單</a>
     <a href="#map">生活圈地圖</a>
@@ -59,11 +60,11 @@
 
   <section class="hero" id="hero" aria-labelledby="heroTitle">
     <div class="wrap">
-      <div class="hero__edition"><span>台北・新北 / A FOOD LOVER’S FIELD GUIDE</span><span>圓通生活誌 &nbsp; VOL. 01</span></div>
+      <div class="hero__edition"><span>台北・新北 / A FOOD LOVER’S FIELD GUIDE</span><span>雙北生活誌 &nbsp; VOL. 02</span></div>
       <div class="hero__layout">
         <div class="hero__copy">
           <p class="eyebrow reveal"><span class="little-star" aria-hidden="true"></span> 肚餓，就出發。</p>
-          <h1 class="hero__title reveal" id="heroTitle" lang="en" style="--i:1">Taipei,<br>one bite<br><em>at a time.</em></h1>
+          <h1 class="hero__title reveal" id="heroTitle" lang="en" style="--i:1">Taiwan,<br>one bite<br><em>at a time.</em></h1>
           <p class="hero__chinese reveal" style="--i:2">由機場到宿舍，一路食到台大。</p>
           <p class="hero__sub reveal" style="--i:2">一碗熱麵、一杯珍奶、一條未行過嘅巷。<br>寫畀住圓通嘅你，將陌生城市食成熟悉嘅日常。</p>
           <div class="hero__actions reveal" style="--i:3">
@@ -73,13 +74,13 @@
         </div>
         <div class="hero__collage reveal" style="--i:2">
           <figure class="hero__plate stage" id="heroStage">
-            <img src="assets/cat-beef-noodle.jpg" alt="紅燒牛肉麵，配上蔥花與青菜" width="640" height="800" fetchpriority="high">
-            <figcaption><span>01 / THE COMFORT BOWL</span><span>先食碗麵。</span></figcaption>
+            <img src="assets/restaurants/yongkang.jpg" alt="永康牛肉麵，2006 年照片" width="640" height="800" fetchpriority="high">
+            <figcaption><span>永康牛肉麵 · 2006</span><a href="https://commons.wikimedia.org/wiki/File:Yong_Kang_Beef_Noodle_1.jpg" target="_blank" rel="noopener noreferrer">Minghong ↗</a><a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0 · 裁切</a></figcaption>
           </figure>
-          <div class="hero__stamp" aria-hidden="true"><span>巷仔內的</span><b>好味道</b><span>TAIPEI GOURMET</span></div>
+          <div class="hero__stamp" aria-hidden="true"><span>巷仔內的</span><b>好味道</b><span>TAIWAN GOURMET</span></div>
           <figure class="hero__postcard">
-            <img src="assets/r-dintaifung.jpg" alt="竹蒸籠裡熱騰騰的小籠包" width="320" height="240">
-            <figcaption>多叫一籠，唔會後悔。 <span aria-hidden="true">↗</span></figcaption>
+            <img src="assets/restaurants/fuhang.jpg" alt="阜杭豆漿的鹹豆漿，2024 年照片" width="320" height="240">
+            <figcaption><span>阜杭豆漿 · 2024</span><a href="https://commons.wikimedia.org/wiki/File:TW_TP_%E5%8F%B0%E5%8C%97_Taipei_%E8%8F%AF%E5%B1%B1%E5%B8%82%E5%A0%B4_HauShan_Market_Food_Court_%E9%98%9C%E6%9D%AD%E8%B1%86%E6%B5%86%E5%BA%97_Fu_Hang_Soy_Milk_Congee_Breakfast_shop_March_2024_R12S_132.jpg" target="_blank" rel="noopener noreferrer">相片來源 / CC0 ↗</a></figcaption>
           </figure>
           <span class="hero__margin" aria-hidden="true">GOOD FOOD. EVERYDAY DISCOVERIES.</span>
           <span class="hero__scribble" aria-hidden="true">好好食飯，好好生活。</span>
@@ -88,9 +89,9 @@
       <div class="hero__bottom">
         <p class="hero__note"><span aria-hidden="true">↳</span> 唔使做攻略做到肚餓。<br><span>我哋幫你整理好，帶住胃出門就得。</span></p>
         <ul class="hero__stats">
-          <li><b data-stat="shops" data-count="88">88</b><span>間店舖收錄</span></li>
+          <li><b data-stat="shops" data-count="194">194</b><span>間店舖收錄</span></li>
           <li><b data-count="4">4</b><span>個覓食生活圈</span></li>
-          <li><b data-stat="price" data-count="144" data-prefix="NT$">NT$144</b><span>指南平均人均 · 參考價</span></li>
+          <li><b data-stat="price" data-count="144" data-prefix="NT$">NT$144</b><span>已有人均資料之平均 · 參考價</span></li>
         </ul>
       </div>
     </div>
@@ -124,10 +125,21 @@
         </a>
         <a class="neighborhood reveal" href="#shops" data-zone-pick="other" style="--i:3">
           <div class="neighborhood__image"><img src="assets/nm-shilin.jpg" alt="夜市燈光與熱鬧攤檔" loading="lazy" width="600" height="440"><span class="neighborhood__number">04</span><span class="round-arrow" aria-hidden="true">↗</span></div>
-          <div class="neighborhood__meta"><span>A LITTLE FURTHER</span><span data-zone-count="other"></span></div><h3>今晚，行遠少少。</h3><p>台北街巷 · 夜市 · 老字號</p>
+          <div class="neighborhood__meta"><span>A LITTLE FURTHER</span><span data-zone-count="other"></span></div><h3>今晚，行遠少少。</h3><p>雙北街巷 · 夜市 · 老字號</p>
         </a>
       </div>
-      <p class="photo-note">照片為美食與街景示意，唔代表每間店嘅實際出品。</p>
+      <p class="photo-note">以上只係生活圈氣氛照片，唔對應個別餐廳；下方店舖相片另附核實來源。</p>
+    </div>
+  </section>
+
+  <section class="section bib-feature" id="bib" aria-labelledby="bibTitle">
+    <div class="wrap">
+      <div class="bib-feature__intro">
+        <div><p class="eyebrow">THE BIB GOURMAND NOTEBOOK / 台北・新北</p><h2 id="bibTitle">必比登，<br><em>由以前食到而家。</em></h2><p>現屆推介，連埋曾經上榜嘅老朋友。<br>唔靠印象貼標籤，每一個入選年份都有出處。</p></div>
+        <div class="bib-feature__stats"><div><b data-bib-count="current">—</b><span><span data-bib-edition>—</span> 現屆入選</span></div><div><b data-bib-count="past">—</b><span>曾入選・非現屆</span></div></div>
+      </div>
+      <div class="bib-feature__actions"><a class="btn btn--primary" href="#shops" data-award-pick="bib">睇歷屆必比登 <span aria-hidden="true">↗</span></a><a class="text-link" href="#shops" data-award-pick="current">只睇現屆 <span aria-hidden="true">→</span></a></div>
+      <details class="bib-method"><summary>點樣核實？查看年份來源與涵蓋範圍</summary><p id="bibLimitations"></p><p>「現屆」以 <span data-bib-edition></span> 版為準。必比登不等於米其林星級；獎項只屬獲列出的店家，不自動延伸到同品牌分店。新北自 2025 年開始納入評選。</p><ul id="bibCoverage"></ul><p><a href="data/bib-gourmand.json">下載完整來源資料（JSON） ↗</a></p></details>
     </div>
   </section>
 
@@ -140,14 +152,21 @@
         <p class="shead__sub reveal" style="--i:2">
           兩套分類可以<b>同時使用</b>：先揀地區（到埗美食／圓通宿舍美食／台大美食／其他），再揀種類（嘢飲／嘢食／甜品）。
           可以按<b>推薦指數</b>或者<b>人均價錢</b>排序，亦可以開住
-          <b>營業中</b>，即時篩走閂咗門嘅店。撳地址直接開 Google Map。
+          <b>營業中</b>，按收錄時間表篩選。必比登係獨立篩選，可再揀城市同種類；未核實營業時間的店不會出現在「營業中」。
         </p>
       </header>
 
       <div class="filters reveal" style="--i:3">
         <label class="searchbox" for="shopSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">搜尋店名、招牌或地址</span><input id="shopSearch" type="search" placeholder="想食咩？搵店名、招牌、街道…" autocomplete="off"><span class="searchbox__hint">跟住你嘅胃搵</span></label>
+        <div class="frow"><span class="flabel">推介</span><div class="chips" id="awardChips" role="group" aria-label="按必比登入選篩選">
+          <button class="chip is-on" type="button" data-award="all" aria-pressed="true">全部指南</button>
+          <button class="chip" type="button" data-award="bib" aria-pressed="false">歷屆必比登 <span class="n" data-bib-count="all"></span></button>
+          <button class="chip" type="button" data-award="current" aria-pressed="false"><span data-bib-edition></span> 必比登 <span class="n" data-bib-count="current"></span></button>
+          <button class="chip" type="button" data-award="past" aria-pressed="false">曾入選・非現屆 <span class="n" data-bib-count="past"></span></button>
+        </div></div>
+        <div class="frow"><span class="flabel">城市</span><div class="chips" id="cityChips" role="group" aria-label="按城市篩選"><button class="chip is-on" type="button" data-city="all" aria-pressed="true">全部（含到埗）</button><button class="chip" type="button" data-city="Taipei" aria-pressed="false">台北</button><button class="chip" type="button" data-city="New Taipei" aria-pressed="false">新北</button></div></div>
         <div class="frow">
-          <span class="flabel">地區</span>
+          <span class="flabel">生活圈</span>
           <div class="chips" id="zoneChips" role="group" aria-label="按地區篩選"></div>
         </div>
         <div class="frow">
@@ -169,13 +188,13 @@
         </div>
       </div>
 
-      <p class="guide-note">人均與推薦指數為指南參考；「營業中」按台北時間及收錄時間表推算，非即時店況。照片為示意。</p>
+      <p class="guide-note">人均與推薦指數為原指南參考，非米其林評分；新增必比登未核實的價錢、評分及營業時間留空。店舖只用可核實並有再使用授權的照片，其餘保留純文字。機場分店不沿用品牌其他店的獎項。</p>
       <div class="grid" id="cards"></div>
       <div class="load-more"><button class="btn btn--ghost" id="loadMore" type="button" hidden>再睇多啲 <span aria-hidden="true">↓</span></button><p id="pageStatus"></p></div>
       <noscript><p class="guide-note">請開啟 JavaScript 使用店舖搜尋與地圖；亦可以下載下方 PowerPoint 離線閱讀。</p></noscript>
 
       <div class="empty" id="empty" hidden>
-        <p>呢個組合暫時未有收錄 🙈</p>
+        <p>呢個組合暫時未有符合條件嘅店。</p>
         <button class="btn btn--ghost" type="button" data-reset>睇返全部</button>
       </div>
     </div>
@@ -369,8 +388,8 @@
 
   <section class="takeaway" aria-labelledby="takeawayTitle">
     <div class="wrap takeaway__inner">
-      <div class="takeaway__cover reveal" aria-hidden="true"><span>圓通食堂 / THE POCKET EDITION</span><b>Taipei,<br><em>to go.</em></b><img src="assets/r-guabao.jpg" alt="" loading="lazy" width="320" height="220"><span>A FOOD LOVER’S FIELD GUIDE ↗</span></div>
-      <div class="takeaway__copy reveal" style="--i:1"><p class="eyebrow">ONE FOR THE ROAD</p><h2 id="takeawayTitle">呢份好味，<br><em>打包帶走。</em></h2><p>想同室友分享，或者出發前一齊做攻略？<br>我哋將美食生活圈整理成一份可以編輯嘅簡報。</p><a class="btn btn--primary" href="presentation/Taipei-Gourmet.pptx" download>下載 PowerPoint <span aria-hidden="true">↗</span></a><span class="takeaway__format">PPTX · 可編輯 · 離線閱讀</span></div>
+      <div class="takeaway__cover reveal" aria-hidden="true"><span>台灣美食 / THE POCKET EDITION</span><b>Taiwan,<br><em>to go.</em></b><img src="assets/r-guabao.jpg" alt="" loading="lazy" width="320" height="220"><span>A FOOD LOVER’S FIELD GUIDE ↗</span></div>
+      <div class="takeaway__copy reveal" style="--i:1"><p class="eyebrow">ONE FOR THE ROAD</p><h2 id="takeawayTitle">呢份好味，<br><em>打包帶走。</em></h2><p>想同室友分享，或者出發前一齊做攻略？<br>我哋將美食生活圈整理成一份可以編輯嘅簡報。</p><a class="btn btn--primary" href="presentation/Taiwan-Gourmet.pptx" download>下載 PowerPoint <span aria-hidden="true">↗</span></a><span class="takeaway__format">PPTX · 可編輯 · 離線閱讀</span></div>
     </div>
   </section>
 
@@ -384,7 +403,7 @@
       <blockquote class="reveal">
         「宿舍唔係只係瞓覺嘅地方。<br />認識一座城市，由認識樓下嗰碗麵開始。」
       </blockquote>
-      <p class="quote__by reveal" style="--i:1">— 圓通食堂 · 寫畀每一位啱啱落機嘅你</p>
+      <p class="quote__by reveal" style="--i:1">— 台灣美食 · 寫畀每一位啱啱落機嘅你</p>
     </div>
   </section>
 
@@ -397,12 +416,13 @@
       <div class="foot__brand">
         <span class="nav__mark" aria-hidden="true">食</span>
         <div>
-          <b>圓通食堂</b>
+          <b>台灣美食</b>
           <p>台大圓通雅筑國際學舍 · 生活美食指南</p>
         </div>
       </div>
       <nav class="foot__nav" aria-label="頁尾選單">
-        <a href="#route">到埗交通</a>
+        <a href="#bib">必比登</a>
+    <a href="#route">到埗交通</a>
         <a href="#shops">美食清單</a>
         <a href="#map">生活圈地圖</a>
         <a href="#tips">住宿生存術</a>
@@ -417,6 +437,8 @@
   </div>
 </footer>
 
+<script src="data/restaurant-photos.js"></script>
+<script src="data/bib-gourmand.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
