@@ -7,7 +7,28 @@
 
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var motionPaused = false;
+  var REDUCE = motionQuery.matches;
+  var motionBtn = $('#motionBtn');
+  try { motionPaused = localStorage.getItem('yuantong-motion') === 'paused'; } catch (e) {}
+  function syncMotion() {
+    REDUCE = motionQuery.matches || motionPaused;
+    document.documentElement.setAttribute('data-motion', REDUCE ? 'paused' : 'playing');
+    if (motionBtn) {
+      motionBtn.setAttribute('aria-pressed', String(REDUCE));
+      motionBtn.setAttribute('aria-label', motionQuery.matches ? '跟隨系統減少動態效果設定' : (REDUCE ? '播放裝飾動畫' : '暫停裝飾動畫'));
+      motionBtn.innerHTML = '<span aria-hidden="true">' + (REDUCE ? '▷' : 'Ⅱ') + '</span> 動畫';
+      motionBtn.disabled = motionQuery.matches;
+    }
+  }
+  syncMotion();
+  if (motionBtn) motionBtn.addEventListener('click', function () {
+    motionPaused = !motionPaused;
+    try { localStorage.setItem('yuantong-motion', motionPaused ? 'paused' : 'playing'); } catch (e) {}
+    syncMotion();
+  });
+  motionQuery.addEventListener('change', syncMotion);
 
   /* ══════════ 1. 主題（Dark / Light） ══════════ */
   var THEME_KEY = 'yuantong-theme';
@@ -20,7 +41,7 @@
     if (themeLabel) themeLabel.textContent = (mode === 'dark') ? '深色' : '淺色';
     if (themeBtn) themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', (mode === 'dark') ? '#0b0b0d' : '#ffffff');
+    if (meta) meta.setAttribute('content', (mode === 'dark') ? '#192720' : '#f5f1e8');
     try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
   }
 
@@ -28,7 +49,7 @@
     var saved = null;
     try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
     if (saved !== 'dark' && saved !== 'light') {
-      saved = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      saved = 'light';
     }
     applyTheme(saved);
   })();
@@ -52,15 +73,6 @@
     { id: 'drink',   name: '嘢飲', color: '#3b93c9' },
     { id: 'dessert', name: '甜品', color: '#e26aa8' }
   ];
-
-  /* ─ 圖片池（依種類輪替） ─ */
-  var IMG = {
-    food: ['cat-beef-noodle','cat-luroufan','cat-dumpling','cat-oyster','cat-stinky-tofu',
-           'cat-fried-chicken','cat-soy-milk','r-hotpot','r-chicken','r-guabao','r-fuhang',
-           'r-dintaifung','s-skewer','s-nugget','s-corndog','nm-shilin','nm-raohe','nm-ningxia','r-muji'],
-    drink:   ['cat-bubble-tea','s-tea','yongkang','nm-linjiang'],
-    dessert: ['s-taro','s-pineapple','taipei101','hero-nightmarket']
-  };
 
   /* ─ 店舖資料 ─
      n:店名  a:地址  h:營業時間(顯示用)  o:營業時間(機器用，見下)  s:招牌推介
@@ -261,8 +273,9 @@
   function openState(d, now) {
     if (!d._o) return 'unknown';
     now = now || new Date();
-    var dow = now.getDay();
-    var mins = now.getHours() * 60 + now.getMinutes();
+    var local = taipeiTime(now);
+    var dow = local.day;
+    var mins = local.hour * 60 + local.minute;
     var prevDow = (dow + 6) % 7;
     for (var i = 0; i < d._o.length; i++) {
       var g = d._o[i];
@@ -270,6 +283,14 @@
       if (g.e > 1440 && g.d.indexOf(prevDow) >= 0 && mins < g.e - 1440) return 'open';
     }
     return 'closed';
+  }
+  function taipeiTime(date) {
+    var parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Taipei', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(date);
+    var values = {};
+    parts.forEach(function (part) { values[part.type] = part.value; });
+    return { day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(values.weekday), hour: +values.hour, minute: +values.minute };
   }
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
@@ -283,13 +304,25 @@
   }
 
   /* ══════════ 4. 渲染：篩選 chips ══════════ */
-  var state = { zone: {}, kind: {}, sort: '', dir: -1, now: false };   // 地區／種類多選：{ id: true }
+  var state = { zone: {}, kind: {}, sort: '', dir: -1, now: false, query: '', limit: 9 };   // 地區／種類多選：{ id: true }
   var counts = { zone: {}, kind: {} };
 
   SHOPS.forEach(function (d) {
     counts.zone[d.z] = (counts.zone[d.z] || 0) + 1;
     counts.kind[d.k] = (counts.kind[d.k] || 0) + 1;
   });
+
+  $$('[data-zone-count]').forEach(function (el) {
+    el.textContent = counts.zone[el.getAttribute('data-zone-count')] + ' 間';
+  });
+  var shopStat = $('[data-stat="shops"]');
+  var priceStat = $('[data-stat="price"]');
+  if (shopStat) { shopStat.dataset.count = SHOPS.length; shopStat.textContent = SHOPS.length; }
+  if (priceStat) {
+    var averagePrice = Math.round(SHOPS.reduce(function (sum, shop) { return sum + shop.p; }, 0) / SHOPS.length);
+    priceStat.dataset.count = averagePrice;
+    priceStat.textContent = 'NT$' + averagePrice;
+  }
 
   function buildChips(host, list, axis, countsMap) {
     if (!host) return;
@@ -310,20 +343,32 @@
   var grid = $('#cards');
   var emptyBox = $('#empty');
   var resultCount = $('#resultCount');
-  var kindSeq = { food: 0, drink: 0, dessert: 0 };
+  function shopImage(d) {
+    var text = d.s + ' ' + d.n;
+    var choices = [
+      [/牛肉.*麵/, 'cat-beef-noodle'], [/割包/, 'r-guabao'], [/小籠包/, 'r-dintaifung'],
+      [/雞排|鹹酥雞|炸雞/, 'r-chicken'], [/火鍋|麻辣鍋/, 'r-hotpot'],
+      [/串燒|燒烤|炭烤/, 's-skewer'], [/臭豆腐/, 'cat-stinky-tofu'],
+      [/滷肉飯|魯肉飯|焢肉飯/, 'cat-luroufan'], [/豆漿/, 'cat-soy-milk'],
+      [/蚵仔煎/, 'cat-oyster'], [/鳳梨|鳳凰酥|烘焙/, 's-pineapple'],
+      [/芋|豆花|冰|甜品/, 's-taro']
+    ];
+    if (d.k === 'drink') return /茶|奶|珍珠|粉圓/.test(text) ? 'cat-bubble-tea' : 's-tea';
+    for (var i = 0; i < choices.length; i++) if (choices[i][0].test(text)) return choices[i][1];
+    return d.k === 'dessert' ? 's-taro' : 'nightmarket-wide';
+  }
 
   function cardHTML(d) {
     var z = zoneOf(d.z), k = kindOf(d.k);
-    var pool = IMG[d.k] || IMG.food;
-    var img = 'assets/' + pool[kindSeq[d.k]++ % pool.length] + '.jpg';
+    var img = 'assets/' + shopImage(d) + '.jpg';
     var q = d.n + ' ' + d.a;
     var ytq = d.n + ' 美食 食記';
 
     return '' +
     '<article class="card" data-i="' + d._i + '" data-z="' + d.z + '" data-k="' + d.k + '"' +
-            ' data-name="' + esc(d.n) + '" data-p="' + d.p + '" data-r="' + d.r + '">' +
+            ' tabindex="-1" data-name="' + esc(d.n) + '" data-p="' + d.p + '" data-r="' + d.r + '">' +
       '<div class="card__media">' +
-        '<img src="' + img + '" alt="' + esc(d.n) + '" loading="lazy" decoding="async" />' +
+        '<img src="' + img + '" alt="美食示意照片，非店家實拍" loading="lazy" decoding="async" width="600" height="375" />' +
         '<span class="card__zone" style="--zc:' + z.color + '">' + esc(z.name) + '</span>' +
         '<span class="card__kind">' + esc(k.name) + '</span>' +
         (d.dc ? '<span class="card__dc">Dcard 推</span>' : '') +
@@ -340,12 +385,12 @@
         '</div>' +
 
         '<div class="card__addrrow">' +
-          '<p class="card__addr" data-map="' + esc(q) + '" title="喺 Google Map 開啟">' +
+          '<a class="card__addr" href="' + mapsUrl(q) + '" target="_blank" rel="noopener noreferrer" title="喺 Google Map 開啟">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
               '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z" stroke-linejoin="round"/>' +
               '<circle cx="12" cy="10" r="2.6"/></svg>' +
             '<span>' + esc(d.a) + '</span>' +
-          '</p>' +
+          '</a>' +
           '<span class="ostate" data-st="unknown"><i></i><em>時間未定</em></span>' +
         '</div>' +
 
@@ -371,7 +416,9 @@
   var cardEls = $$('.card', grid);
 
   /* ══════════ 6. 篩選 · 排序 · 依家營業緊 ══════════ */
-  var hideTimer = null;
+  var searchInput = $('#shopSearch');
+  var loadMore = $('#loadMore');
+  var pageStatus = $('#pageStatus');
   var nowClock = $('#nowClock');
   var openNowBtn = $('#openNowBtn');
 
@@ -433,6 +480,10 @@
     for (key in k) { kOK = false; break; }
     if (!kOK) kOK = !!k[el.getAttribute('data-k')];
     if (!(zOK && kOK)) return false;
+    if (state.query) {
+      var shop = SHOPS[+el.getAttribute('data-i')];
+      if ((shop.n + ' ' + shop.a + ' ' + shop.s).toLowerCase().indexOf(state.query) === -1) return false;
+    }
     if (state.now) {
       var d = SHOPS[+el.getAttribute('data-i')];
       if (!d || openState(d, now) !== 'open') return false;
@@ -446,6 +497,7 @@
       var id = c.getAttribute('data-id');
       var on = (id === '__all') ? (Object.keys(state[axis]).length === 0) : !!state[axis][id];
       c.classList.toggle('is-on', on);
+      c.setAttribute('aria-pressed', String(on));
     });
   }
 
@@ -459,58 +511,64 @@
       if (!pill) return;
       pill.setAttribute('data-st', st);
       var em = $('em', pill);
-      if (em) em.textContent = (st === 'open') ? '營業中' : (st === 'closed' ? '休息中' : '時間未定');
+      if (em) em.textContent = (st === 'open') ? '預計營業中' : (st === 'closed' ? '預計休息中' : '時間未定');
     });
   }
 
   function tickClock(now) {
     if (!nowClock) return;
-    var wd = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
-    nowClock.textContent = '週' + wd + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes());
+    var local = taipeiTime(now);
+    var wd = ['日', '一', '二', '三', '四', '五', '六'][local.day];
+    nowClock.textContent = '台北 週' + wd + ' ' + pad2(local.hour) + ':' + pad2(local.minute);
   }
 
-  function applyFilter(animate) {
+  function applyFilter(animate, preservePage) {
+    if (!preservePage) state.limit = 9;
     var now = new Date();
     tickClock(now);
     refreshOpenStates(now);
     applySort();
-
     var shown = 0;
-    cardEls.forEach(function (el) {
+    $$('.card', grid).forEach(function (el) {
       var ok = matches(el, now);
       if (ok) shown++;
-      if (ok) {
-        el.classList.remove('is-gone');
-        if (animate && !REDUCE) {
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () { el.classList.remove('is-out'); });
-          });
-        } else {
-          el.classList.remove('is-out');
-        }
-      } else {
-        el.classList.add('is-out');
-      }
+      var visible = ok && shown <= state.limit;
+      var wasHidden = el.classList.contains('is-gone');
+      el.classList.toggle('is-gone', !visible);
+      el.classList.toggle('is-entering', !!(animate && !REDUCE && visible && wasHidden));
     });
-
-    if (resultCount) {
-      resultCount.innerHTML = '搵到 <b>' + shown + '</b> 間（共 ' + SHOPS.length + ' 間）' +
-        (state.now ? ' · 只計營業中' : '');
-    }
-    if (emptyBox) emptyBox.hidden = (shown !== 0);
-
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(function () {
-      var n2 = new Date();
-      cardEls.forEach(function (el) { el.classList.toggle('is-gone', !matches(el, n2)); });
-    }, animate && !REDUCE ? 460 : 0);
+    var visibleCount = Math.min(shown, state.limit);
+    if (resultCount) resultCount.innerHTML = '搵到 <b>' + shown + '</b> 間（共 ' + SHOPS.length + ' 間）' + (state.now ? ' · 按時間表預計營業中' : '');
+    if (emptyBox) emptyBox.hidden = shown !== 0;
+    if (loadMore) loadMore.hidden = visibleCount >= shown;
+    if (pageStatus) pageStatus.textContent = shown ? '已睇到 ' + visibleCount + ' / ' + shown + ' 間 · 慢慢揀，慢慢食。' : '';
   }
+
+  if (searchInput) searchInput.addEventListener('input', function () {
+    state.query = searchInput.value.trim().toLowerCase();
+    applyFilter(true);
+  });
+  if (loadMore) loadMore.addEventListener('click', function () {
+    var previousVisible = $$('.card:not(.is-gone)', grid).length;
+    state.limit += 9;
+    applyFilter(true, true);
+    var firstNew = $$('.card:not(.is-gone)', grid)[previousVisible];
+    if (firstNew) firstNew.focus({ preventScroll: true });
+  });
 
   function closestOf(node, sel) {
     return (node && node.closest) ? node.closest(sel) : null;
   }
 
   document.addEventListener('click', function (e) {
+    var neighborhood = closestOf(e.target, '[data-zone-pick]');
+    if (neighborhood) {
+      resetAll();
+      state.zone[neighborhood.getAttribute('data-zone-pick')] = true;
+      syncChips();
+      applyFilter(true);
+      return;
+    }
     var nowBtn = closestOf(e.target, '#openNowBtn');
     if (nowBtn) {
       state.now = !state.now;
@@ -550,7 +608,8 @@
 
   function resetAll() {
     state.zone = {}; state.kind = {};
-    state.sort = ''; state.dir = -1; state.now = false;
+    state.sort = ''; state.dir = -1; state.now = false; state.query = '';
+    if (searchInput) searchInput.value = '';
     if (openNowBtn) {
       openNowBtn.classList.remove('is-on');
       openNowBtn.setAttribute('aria-pressed', 'false');
@@ -560,14 +619,7 @@
   var resetBtn = $('#resetBtn');
   if (resetBtn) resetBtn.addEventListener('click', resetAll);
 
-  /* 卡片：撳地址 → Google Map */
-  if (grid) {
-    grid.addEventListener('click', function (e) {
-      var t = closestOf(e.target, '[data-map]');
-      if (t) { e.preventDefault(); openTab(mapsUrl(t.getAttribute('data-map'))); }
-    });
-  }
-
+  syncChips();
   syncSortChips();
   applyFilter(false);
 
@@ -576,7 +628,7 @@
     var n = new Date();
     tickClock(n);
     refreshOpenStates(n);
-    if (state.now) applyFilter(false);
+    if (state.now) applyFilter(false, true);
   }, 60000);
 
   /* ══════════ 7. 地圖：標記 + 聚落 ══════════ */
@@ -587,7 +639,7 @@
 
   if (markersHost) {
     markersHost.innerHTML = SPOTS.map(function (s, i) {
-      return '<button class="mk" type="button" data-i="' + i + '" style="left:' + (s.sx / 10) + '%;top:' + (s.sy / 7.2) + '%;--mc:' + s.c + '">' +
+      return '<button class="mk" type="button" aria-label="' + (i + 1) + ' ' + esc(s.t) + '" data-i="' + i + '" style="left:' + (s.sx / 10) + '%;top:' + (s.sy / 7.2) + '%;--mc:' + s.c + '">' +
                '<span class="mk__pin">' + (i + 1) + '</span>' +
                '<span class="mk__label">' + esc(s.t) + '</span>' +
              '</button>';
@@ -604,7 +656,7 @@
         return SHOPS.some(function (d) { return d.n === t; });
       }).length;
       return '<button class="spot" type="button" data-i="' + i + '" style="--sc:' + s.c + '">' +
-               '<span class="spot__ico" aria-hidden="true">' + s.g + '</span>' +
+               '<span class="spot__ico" aria-hidden="true">' + pad2(i + 1) + '</span>' +
                '<span class="spot__txt"><span class="spot__name">' + esc(s.t) + '</span>' +
                '<span class="spot__desc">' + esc(s.d.split('—')[0].split('——')[0].slice(0, 34)) + '…</span></span>' +
                '<span class="spot__n">' + n + '</span>' +
@@ -620,7 +672,9 @@
     if (!spotDetail) return;
     var s = SPOTS[i];
     var tags = (s.tags || []).map(function (t) {
-      return '<span data-goto="' + esc(t) + '">' + esc(t) + '</span>';
+      return SHOPS.some(function (shop) { return shop.n === t; })
+        ? '<button type="button" data-goto="' + esc(t) + '">' + esc(t) + '</button>'
+        : '<span>' + esc(t) + '</span>';
     }).join('');
     spotDetail.innerHTML =
       '<h4 class="pd__title">' + esc(s.t) + '</h4>' +
@@ -633,8 +687,11 @@
 
   function selectSpot(i, scrollList) {
     activeSpot = i;
-    $$('.mk').forEach(function (m, n) { m.classList.toggle('is-on', n === i); });
-    $$('.spot').forEach(function (m, n) { m.classList.toggle('is-on', n === i); });
+    $$('.mk, .spot').forEach(function (m) {
+      var selected = +m.getAttribute('data-i') === i;
+      m.classList.toggle('is-on', selected);
+      m.setAttribute('aria-pressed', String(selected));
+    });
     renderDetail(i);
     if (scrollList && REDUCE === false) {
       var el = $$('.spot')[i];
@@ -652,13 +709,14 @@
       SHOPS.forEach(function (d) { if (d.n === name) shop = d; });
       if (!shop) return;
 
-      state.zone = {}; state.kind = {};
-      state.sort = ''; state.dir = -1;
-      syncChips(); syncSortChips(); applyFilter(false);
+      resetAll();
+      state.limit = Math.ceil((shop._i + 1) / 9) * 9;
+      applyFilter(false, true);
 
       var target = null;
       cardEls.forEach(function (el) { if (el.getAttribute('data-name') === name) target = el; });
       if (target) {
+        target.focus({ preventScroll: true });
         target.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'center' });
         target.classList.add('is-flash');
         setTimeout(function () { target.classList.remove('is-flash'); }, 1600);
@@ -680,14 +738,14 @@
         if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (el) { io.observe(el); });
+    els.forEach(function (el) { el.classList.add('is-waiting'); io.observe(el); });
   }
   observeReveals();
 
   /* ══════════ 9. 數字計數 ══════════ */
   function runCounters() {
     var nodes = $$('[data-count]');
-    if (REDUCE) {
+    if (REDUCE || !('IntersectionObserver' in window)) {
       nodes.forEach(function (el) {
         var v = parseFloat(el.getAttribute('data-count'));
         var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
@@ -706,7 +764,7 @@
         var dur = 1500, t0 = 0;
         function step(t) {
           if (!t0) t0 = t;
-          var p = Math.min(1, (t - t0) / dur);
+          var p = REDUCE ? 1 : Math.min(1, (t - t0) / dur);
           var e = 1 - Math.pow(1 - p, 3);
           el.textContent = pre + (end * e).toFixed(dec);
           if (p < 1) requestAnimationFrame(step);
@@ -760,39 +818,37 @@
   window.addEventListener('resize', onScroll, { passive: true });
   onFrame();
 
-  /* ══════════ 11. 漢堡選單 ══════════ */
   var burger = $('#burger');
   var sheet = $('#sheet');
+  function closeMenu(returnFocus) {
+    if (!burger || !sheet) return;
+    sheet.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('is-locked');
+    if (returnFocus) burger.focus();
+  }
   if (burger && sheet) {
     burger.addEventListener('click', function () {
       var open = sheet.classList.toggle('is-open');
       burger.setAttribute('aria-expanded', String(open));
-      document.body.classList.toggle('is-locked', open && window.innerWidth < 900);
     });
     sheet.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        sheet.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('is-locked');
-      }
+      if (e.target.closest('a')) closeMenu(false);
     });
-  }
-
-  /* ══════════ 12. 載入動畫 + Hero 進場 ══════════ */
-  function boot() {
-    var loader = $('#loader');
-    if (loader) {
-      setTimeout(function () { loader.classList.add('is-done'); }, REDUCE ? 0 : 520);
-    }
-    stages.forEach(function (st) {
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { st.classList.add('is-ready'); });
-      });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sheet.classList.contains('is-open')) closeMenu(true);
     });
-    onFrame();
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) closeMenu(false);
+    });
+    document.addEventListener('focusin', function (e) {
+      if (!nav.contains(e.target)) closeMenu(false);
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900) closeMenu(false);
+    }, { passive: true });
   }
-  if (document.readyState === 'complete') boot();
-  else window.addEventListener('load', boot);
-  setTimeout(boot, 2600);   // 保險：圖片太慢都照樣收起載入畫面
+  stages.forEach(function (stage) { stage.classList.add('is-ready'); });
+  onFrame();
 
 })();
