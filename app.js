@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════
-   圓通食堂 Yuantong Table — 互動腳本
+   台灣美食 Taiwan Gourmet — 互動腳本
    台大圓通雅筑國際學舍 · 生活美食指南
    ══════════════════════════════════════════════════════════ */
 (function () {
@@ -7,7 +7,28 @@
 
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var motionPaused = false;
+  var REDUCE = motionQuery.matches;
+  var motionBtn = $('#motionBtn');
+  try { motionPaused = localStorage.getItem('yuantong-motion') === 'paused'; } catch (e) {}
+  function syncMotion() {
+    REDUCE = motionQuery.matches || motionPaused;
+    document.documentElement.setAttribute('data-motion', REDUCE ? 'paused' : 'playing');
+    if (motionBtn) {
+      motionBtn.setAttribute('aria-pressed', String(REDUCE));
+      motionBtn.setAttribute('aria-label', motionQuery.matches ? '跟隨系統減少動態效果設定' : (REDUCE ? '播放裝飾動畫' : '暫停裝飾動畫'));
+      motionBtn.innerHTML = '<span aria-hidden="true">' + (REDUCE ? '▷' : 'Ⅱ') + '</span> 動畫';
+      motionBtn.disabled = motionQuery.matches;
+    }
+  }
+  syncMotion();
+  if (motionBtn) motionBtn.addEventListener('click', function () {
+    motionPaused = !motionPaused;
+    try { localStorage.setItem('yuantong-motion', motionPaused ? 'paused' : 'playing'); } catch (e) {}
+    syncMotion();
+  });
+  motionQuery.addEventListener('change', syncMotion);
 
   /* ══════════ 1. 主題（Dark / Light） ══════════ */
   var THEME_KEY = 'yuantong-theme';
@@ -20,7 +41,7 @@
     if (themeLabel) themeLabel.textContent = (mode === 'dark') ? '深色' : '淺色';
     if (themeBtn) themeBtn.setAttribute('aria-pressed', String(mode === 'dark'));
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', (mode === 'dark') ? '#0b0b0d' : '#ffffff');
+    if (meta) meta.setAttribute('content', (mode === 'dark') ? '#192720' : '#f5f1e8');
     try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
   }
 
@@ -28,7 +49,7 @@
     var saved = null;
     try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
     if (saved !== 'dark' && saved !== 'light') {
-      saved = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      saved = 'light';
     }
     applyTheme(saved);
   })();
@@ -44,7 +65,7 @@
     { id: 'arrival', name: '到埗美食',     color: '#ff9500', hint: '桃園機場 → 圓通宿舍沿線' },
     { id: 'yt',      name: '圓通宿舍美食', color: '#2fa84a', hint: '工專路 · 華新街 · 南勢角 · 興南夜市' },
     { id: 'ntu',     name: '台大美食',     color: '#5ac26a', hint: '公館 · 溫州街 · 汀州路 · 台大校區' },
-    { id: 'other',   name: '其他',         color: '#8a5cf6', hint: '台北其餘必食' }
+    { id: 'other',   name: '雙北其他',     color: '#8a5cf6', hint: '台北與新北其餘美食' }
   ];
 
   var KINDS = [
@@ -52,15 +73,6 @@
     { id: 'drink',   name: '嘢飲', color: '#3b93c9' },
     { id: 'dessert', name: '甜品', color: '#e26aa8' }
   ];
-
-  /* ─ 圖片池（依種類輪替） ─ */
-  var IMG = {
-    food: ['cat-beef-noodle','cat-luroufan','cat-dumpling','cat-oyster','cat-stinky-tofu',
-           'cat-fried-chicken','cat-soy-milk','r-hotpot','r-chicken','r-guabao','r-fuhang',
-           'r-dintaifung','s-skewer','s-nugget','s-corndog','nm-shilin','nm-raohe','nm-ningxia','r-muji'],
-    drink:   ['cat-bubble-tea','s-tea','yongkang','nm-linjiang'],
-    dessert: ['s-taro','s-pineapple','taipei101','hero-nightmarket']
-  };
 
   /* ─ 店舖資料 ─
      n:店名  a:地址  h:營業時間(顯示用)  o:營業時間(機器用，見下)  s:招牌推介
@@ -77,9 +89,9 @@
     { n:'龜記茗品 桃園機場 T1', a:'第一航廈 B4', h:'06:00–22:00', o:'* 06:00-22:00', s:'紅柚翡翠 · 水果茶', p:80, z:'arrival', k:'drink', r:4.4, i:'台灣在地手搖，落機第一杯先算真正開始。' },
     { n:'熊厚呷珍珠奶茶 桃園機場 T1', a:'第一航廈 B1', h:'10:00–22:00', o:'* 10:00-22:00', s:'黑糖珍珠鮮奶', p:90, z:'arrival', k:'drink', r:4.2, i:'黑糖珍珠夠煙韌，甜度冰量都可以自己揀。' },
     { n:'日春木瓜牛奶 桃園機場 T2', a:'第二航廈 B2', h:'07:00–21:00', o:'* 07:00-21:00', s:'木瓜牛奶 · 草莓牛奶', p:100, z:'arrival', k:'drink', r:4.3, i:'台灣古早味果汁攤，木瓜牛奶係不敗經典。' },
-    { n:'小王煮瓜 桃園機場 T2', a:'第二航廈 3F', h:'06:00–23:00', o:'* 06:00-23:00', s:'魯肉飯 · 焢肉飯', p:120, z:'arrival', k:'food', r:4.5, i:'米其林必比登推介嘅滷肉飯，機場價錢都算親民。' },
+    { n:'小王煮瓜 桃園機場 T2', a:'第二航廈 3F', h:'06:00–23:00', o:'* 06:00-23:00', s:'魯肉飯 · 焢肉飯', p:120, z:'arrival', k:'food', r:4.5, i:'機場裡嘅滷肉飯選擇，食完再出發。此分店未核實必比登資格。' },
     { n:'老董牛肉麵 桃園機場 T2', a:'第二航廈 4F', h:'06:00–22:30', o:'* 06:00-22:30', s:'清燉牛肉麵 · 番茄牛肉麵', p:380, z:'arrival', k:'food', r:4.3, i:'湯底清甜唔油膩、牛肉軟嫩，落機食碗熱湯麵最舒服。' },
-    { n:'雙月食品社 桃園機場 T2', a:'第二航廈 4F', h:'06:00–21:30', o:'* 06:00-21:30', s:'麻油雞湯 · 何首烏雞湯', p:300, z:'arrival', k:'food', r:4.7, i:'米其林必比登推介，冬天落機飲碗雞湯即刻回暖。' },
+    { n:'雙月食品社 桃園機場 T2', a:'第二航廈 4F', h:'06:00–21:30', o:'* 06:00-21:30', s:'麻油雞湯 · 何首烏雞湯', p:300, z:'arrival', k:'food', r:4.7, i:'冬天落機飲碗雞湯回暖。此分店未核實必比登資格。' },
     { n:'萬芳冰室 桃園機場 T2', a:'第二航廈 4F', h:'06:00–21:00', o:'* 06:00-21:00', s:'冰火菠蘿油 · 絲襪奶茶', p:260, z:'arrival', k:'food', r:4.2, i:'港式茶餐廳，蛋撻同乾炒牛河都做得似模似樣。' },
     { n:'仕紳品麵 桃園機場 T2', a:'第二航廈 4F', h:'06:00–22:00', o:'* 06:00-22:00', s:'牛肉麵 · 小菜拼盤', p:320, z:'arrival', k:'food', r:4.1, i:'裝潢靚、坐得舒服，啱落機慢慢食一餐。' },
     { n:'台鐵便當 台北車站', a:'台北市中正區北平西路 3 號 · 台北車站 B1', h:'06:00–22:00', o:'* 06:00-22:00', s:'排骨便當 · 雞腿便當', p:100, z:'arrival', k:'food', r:4.0, i:'A1 落車轉捷運前最平一站，NT$100 就食得飽。' },
@@ -156,14 +168,14 @@
     { n:'公館龍潭豆花', a:'台北市中正區汀州路三段', h:'11:00–22:30', o:'* 11:00-22:30', s:'傳統豆花 · 粉圓豆花', p:55, z:'ntu', k:'dessert', r:4.0, i:'平靚正嘅台式豆花，糖水甜度自選。' },
 
     /* ───── 其他：台北其餘必食 ───── */
-    { n:'阜杭豆漿', a:'台北市中正區忠孝東路一段 108 號 2 樓（華山市場）', h:'05:30–12:30（週一休）', o:'0/2-6 05:30-12:30', s:'厚燒餅油條 · 鹹豆漿', p:80, z:'other', k:'food', r:4.5, i:'米其林必比登，排一小時都值得，早起身就嚟。' },
-    { n:'鼎泰豐 信義本店', a:'台北市大安區信義路二段 194 號', h:'10:00–21:00', o:'* 10:00-21:00', s:'小籠包 · 元盅雞湯', p:600, z:'other', k:'food', r:4.6, i:'世界級小籠包，18 摺皮薄汁多，請屋企人食最穩陣。' },
+    { n:'阜杭豆漿', a:'台北市中正區忠孝東路一段 108 號 2 樓（華山市場）', h:'05:30–12:30（週一休）', o:'0/2-6 05:30-12:30', s:'厚燒餅油條 · 鹹豆漿', p:80, z:'other', k:'food', r:4.5, i:'曾獲必比登，以厚燒餅油條同鹹豆漿聞名；入選年份見來源。' },
+    { n:'鼎泰豐 信義本店', a:'台北市大安區信義路二段 194 號', h:'外帶店；請查看最新公告', o:'', s:'小籠包 · 元盅雞湯', p:600, z:'other', k:'food', r:4.6, i:'194號信義本店現為外帶；內用及現屆必比登對應277號新生店，兩店獎項分開紀錄。' },
     { n:'永康牛肉麵', a:'台北市大安區金山南路二段 31 巷 17 號', h:'11:00–21:00', o:'* 11:00-21:00', s:'紅燒牛肉麵 · 粉蒸排骨', p:300, z:'other', k:'food', r:4.3, i:'永康街地標，湯頭濃郁帶花椒香。' },
     { n:'金峰滷肉飯', a:'台北市中正區羅斯福路一段 10 號', h:'08:00–01:00', o:'* 08:00-01:00', s:'魯肉飯 · 焢肉飯', p:70, z:'other', k:'food', r:4.3, i:'開到凌晨，滷汁撈飯一流，宵夜都搵到佢。' },
     { n:'阿宗麵線', a:'台北市萬華區峨眉街 8-1 號', h:'09:00–22:30', o:'* 09:00-22:30', s:'大腸麵線 · 肉羹麵線', p:70, z:'other', k:'food', r:4.2, i:'西門町站住食嘅經典，蒜泥烏醋自己加。' },
     { n:'豪大大雞排 士林夜市', a:'台北市士林區基河路 101 號（士林夜市）', h:'15:00–00:00', o:'* 15:00-00:00', s:'超大雞排', p:80, z:'other', k:'food', r:4.0, i:'比塊面仲要大，兩個人分一塊就夠。' },
     { n:'福州世祖胡椒餅 饒河街夜市', a:'台北市松山區饒河街 249 號前', h:'16:00–23:30', o:'* 16:00-23:30', s:'胡椒餅', p:65, z:'other', k:'food', r:4.4, i:'饒河街入口第一檔，永遠排長龍。' },
-    { n:'劉芋仔 寧夏夜市', a:'台北市大同區寧夏路與民生西路口（寧夏夜市）', h:'15:00–23:00', o:'* 15:00-23:00', s:'芋丸 · 蛋黃芋餅', p:60, z:'other', k:'dessert', r:4.3, i:'米其林必比登推介，外脆內綿，趁熱食。' },
+    { n:'劉芋仔 寧夏夜市', a:'台北市大同區寧夏路與民生西路口（寧夏夜市）', h:'15:00–23:00', o:'* 15:00-23:00', s:'芋丸 · 蛋黃芋餅', p:60, z:'other', k:'dessert', r:4.3, i:'曾獲必比登，主打芋丸同蛋黃芋餅；入選年份見來源。' },
     { n:'龍都冰果室', a:'台北市萬華區廣州街 168 號', h:'10:30–23:00', o:'* 10:30-23:00', s:'八寶冰 · 芒果冰', p:120, z:'other', k:'dessert', r:4.1, i:'剉冰界嘅老舖，料多到滿瀉。' },
     { n:'雪王冰淇淋', a:'台北市中正區武昌街一段 52 號', h:'11:00–22:00', o:'* 11:00-22:00', s:'怪味冰淇淋（麻油雞 · 豬腳 · 芹菜）', p:150, z:'other', k:'dessert', r:4.0, i:'世界罕見嘅怪味冰淇淋舖，膽大必試。' },
     { n:'咖啡小自由', a:'台北市大安區金華街 243 巷 1 號', h:'12:00–22:00', o:'* 12:00-22:00', s:'單品手沖 · 冰滴咖啡', p:250, z:'other', k:'drink', r:4.2, i:'永康街一帶嘅文青咖啡名店，坐得舒服。' },
@@ -213,6 +225,23 @@
       tags:['台鐵便當 台北車站'] }
   ];
 
+  var BIB_GUIDE = window.BIB_GUIDE || { latestEdition: null, restaurants: [], coverage: [], limitations: [] };
+  var RESTAURANT_PHOTOS = window.RESTAURANT_PHOTOS || {};
+  var legacyNames = SHOPS.map(function (shop) { return shop.n; });
+  BIB_GUIDE.restaurants.forEach(function (entry) {
+    var match = SHOPS.find(function (shop) { return entry.n === shop.n || (entry.aliases || []).indexOf(shop.n) !== -1; });
+    if (match) {
+      match.bib = entry.bib;
+      match.bibId = entry.id;
+      match.michelinUrl = entry.michelinUrl;
+      match.city = entry.city;
+    } else {
+      SHOPS.push({ n: entry.n, a: entry.a || '', h: '請查看店家最新公告', o: '', s: entry.s || '請查看來源',
+        p: null, r: null, z: 'other', k: entry.k, i: entry.i, city: entry.city,
+        bib: entry.bib, bibId: entry.id, michelinUrl: entry.michelinUrl });
+    }
+  });
+
   /* ══════════ 3. 工具 ══════════ */
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (m) {
@@ -261,8 +290,9 @@
   function openState(d, now) {
     if (!d._o) return 'unknown';
     now = now || new Date();
-    var dow = now.getDay();
-    var mins = now.getHours() * 60 + now.getMinutes();
+    var local = taipeiTime(now);
+    var dow = local.day;
+    var mins = local.hour * 60 + local.minute;
     var prevDow = (dow + 6) % 7;
     for (var i = 0; i < d._o.length; i++) {
       var g = d._o[i];
@@ -270,6 +300,14 @@
       if (g.e > 1440 && g.d.indexOf(prevDow) >= 0 && mins < g.e - 1440) return 'open';
     }
     return 'closed';
+  }
+  function taipeiTime(date) {
+    var parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Taipei', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(date);
+    var values = {};
+    parts.forEach(function (part) { values[part.type] = part.value; });
+    return { day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(values.weekday), hour: +values.hour, minute: +values.minute };
   }
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
@@ -283,13 +321,26 @@
   }
 
   /* ══════════ 4. 渲染：篩選 chips ══════════ */
-  var state = { zone: {}, kind: {}, sort: '', dir: -1, now: false };   // 地區／種類多選：{ id: true }
+  var state = { zone: {}, kind: {}, sort: '', dir: -1, now: false, query: '', award: 'all', city: 'all', limit: 9 };   // 地區／種類多選：{ id: true }
   var counts = { zone: {}, kind: {} };
 
   SHOPS.forEach(function (d) {
     counts.zone[d.z] = (counts.zone[d.z] || 0) + 1;
     counts.kind[d.k] = (counts.kind[d.k] || 0) + 1;
   });
+
+  $$('[data-zone-count]').forEach(function (el) {
+    el.textContent = counts.zone[el.getAttribute('data-zone-count')] + ' 間';
+  });
+  var shopStat = $('[data-stat="shops"]');
+  var priceStat = $('[data-stat="price"]');
+  if (shopStat) { shopStat.dataset.count = SHOPS.length; shopStat.textContent = SHOPS.length; }
+  if (priceStat) {
+    var pricedShops = SHOPS.filter(function (shop) { return Number.isFinite(shop.p); });
+    var averagePrice = Math.round(pricedShops.reduce(function (sum, shop) { return sum + shop.p; }, 0) / pricedShops.length);
+    priceStat.dataset.count = averagePrice;
+    priceStat.textContent = 'NT$' + averagePrice;
+  }
 
   function buildChips(host, list, axis, countsMap) {
     if (!host) return;
@@ -310,68 +361,60 @@
   var grid = $('#cards');
   var emptyBox = $('#empty');
   var resultCount = $('#resultCount');
-  var kindSeq = { food: 0, drink: 0, dessert: 0 };
+  function shopImage(d) {
+    var photo = RESTAURANT_PHOTOS[d.n];
+    return photo && photo.venue === d.n && photo.sourceUrl && photo.licenseUrl ? photo : null;
+  }
+
+  function photoHTML(d) {
+    var photo = shopImage(d);
+    if (!photo) return '';
+    return '<figure class="restaurant-photo"><div class="card__media"><img src="' + esc(photo.src) + '" alt="' + esc(photo.alt) + '" loading="lazy" width="1200" height="900"></div>' +
+      '<figcaption class="photo-credit"><span>' + esc(photo.venue) + ' · ' + photo.year + ' 年照片，非即時</span>' +
+      '<a href="' + esc(photo.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(photo.author) + ' / 相片來源 ↗</a>' +
+      '<a href="' + esc(photo.licenseUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(photo.license) + '</a><span>已縮圖・版面裁切</span></figcaption></figure>';
+  }
+
+  function bibHTML(d) {
+    if (!d.bib) return '';
+    var sources = d.bib.sources.map(function (source) {
+      return '<li><a href="' + esc(source.url) + '" target="_blank" rel="noopener noreferrer">' + source.years.join('、') + ' · ' + esc(source.title) + ' ↗</a></li>';
+    }).join('');
+    return '<div class="bib-record"><span class="bib-badge' + (d.bib.current ? '' : ' bib-badge--past') + '">' +
+      (d.bib.current ? BIB_GUIDE.latestEdition + ' 必比登' : '曾獲必比登 · 非雙北 ' + BIB_GUIDE.latestEdition) + '</span>' +
+      '<details class="bib-evidence"><summary>入選年份與來源</summary><p>已核實：' + d.bib.years.join('、') + '</p>' +
+      '<p>未列年份不代表未獲獎；歷史入選不保證目前仍營業。</p><ul>' + sources + '</ul></details></div>';
+  }
 
   function cardHTML(d) {
     var z = zoneOf(d.z), k = kindOf(d.k);
-    var pool = IMG[d.k] || IMG.food;
-    var img = 'assets/' + pool[kindSeq[d.k]++ % pool.length] + '.jpg';
-    var q = d.n + ' ' + d.a;
-    var ytq = d.n + ' 美食 食記';
-
-    return '' +
-    '<article class="card" data-i="' + d._i + '" data-z="' + d.z + '" data-k="' + d.k + '"' +
-            ' data-name="' + esc(d.n) + '" data-p="' + d.p + '" data-r="' + d.r + '">' +
-      '<div class="card__media">' +
-        '<img src="' + img + '" alt="' + esc(d.n) + '" loading="lazy" decoding="async" />' +
-        '<span class="card__zone" style="--zc:' + z.color + '">' + esc(z.name) + '</span>' +
-        '<span class="card__kind">' + esc(k.name) + '</span>' +
-        (d.dc ? '<span class="card__dc">Dcard 推</span>' : '') +
-        '<span class="card__rate">' +
-          '<span class="rv">' + d.r.toFixed(1) + '</span>' +
-          '<span class="rl">推薦指數</span>' +
-        '</span>' +
-      '</div>' +
-
-      '<div class="card__body">' +
-        '<div class="card__title">' +
-          '<h3 class="card__name">' + esc(d.n) + '</h3>' +
-          '<span class="card__stars">' + starsHTML(d.r) + '</span>' +
-        '</div>' +
-
-        '<div class="card__addrrow">' +
-          '<p class="card__addr" data-map="' + esc(q) + '" title="喺 Google Map 開啟">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
-              '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z" stroke-linejoin="round"/>' +
-              '<circle cx="12" cy="10" r="2.6"/></svg>' +
-            '<span>' + esc(d.a) + '</span>' +
-          '</p>' +
-          '<span class="ostate" data-st="unknown"><i></i><em>時間未定</em></span>' +
-        '</div>' +
-
-        '<dl class="card__meta">' +
-          '<div class="mbox"><dt>營業時間</dt><dd>' + esc(d.h) + '</dd></div>' +
-          '<div class="mbox mbox--money"><dt>人均消費</dt><dd>NT$' + d.p + '</dd></div>' +
-        '</dl>' +
-
-        '<div class="card__sign"><span class="k">招牌</span><span class="v">' + esc(d.s) + '</span></div>' +
-        '<p class="card__intro">' + esc(d.i) + '</p>' +
-      '</div>' +
-
-      '<div class="card__foot">' +
-        '<a class="lk lk--yt" href="' + ytUrl(ytq) + '" target="_blank" rel="noopener noreferrer">' +
-          '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
-            '<path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77C22 15.2 22 12 22 12s0-3.2-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>' +
-          'YouTube 食評</a>' +
-      '</div>' +
-    '</article>';
+    var q = d.n + ' ' + (d.a || (d.city === 'New Taipei' ? '新北市' : '台北市'));
+    var hasPrice = Number.isFinite(d.p), hasRating = Number.isFinite(d.r);
+    return '<article class="card' + (shopImage(d) ? ' card--photo' : ' card--text') + '" data-i="' + d._i + '" data-z="' + d.z + '" data-k="' + d.k + '"' +
+      ' tabindex="-1" data-name="' + esc(d.n) + '" data-p="' + (hasPrice ? d.p : '') + '" data-r="' + (hasRating ? d.r : '') + '">' +
+      '<div class="card__masthead"><span class="card__index">' + String(d._i + 1).padStart(3, '0') + '</span><span>' + esc(z.name) + ' / ' + esc(k.name) + '</span>' + (d.dc ? '<span>Dcard 推</span>' : '') + '</div>' +
+      photoHTML(d) +
+      '<div class="card__body"><div class="card__title"><h3 class="card__name">' + esc(d.n) + '</h3></div>' +
+      bibHTML(d) +
+      '<div class="card__addrrow"><a class="card__addr" href="' + mapsUrl(q) + '" target="_blank" rel="noopener noreferrer" title="喺 Google Map 開啟">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>' +
+      '<span>' + esc(d.a || '查地圖核對地址') + '</span></a><span class="ostate" data-st="unknown"><i></i><em>時間未定</em></span></div>' +
+      '<dl class="card__meta"><div class="mbox"><dt>營業時間</dt><dd>' + esc(d.h) + '</dd></div>' +
+      '<div class="mbox mbox--money"><dt>指南人均估算</dt><dd>' + (hasPrice ? 'NT$' + d.p : '尚未核實') + '</dd></div></dl>' +
+      '<div class="card__sign"><span class="k">料理</span><span class="v">' + esc(d.s) + '</span></div><p class="card__intro">' + esc(d.i) + '</p>' +
+      (hasRating ? '<p class="card__guide-rating">指南推薦指數 ' + d.r.toFixed(1) + ' / 5 · 非米其林評分</p>' : '') +
+      (!shopImage(d) ? '<p class="card__photo-status">未有可核實及授權嘅店家相片，唔用其他店代替。</p>' : '') + '</div>' +
+      '<div class="card__foot">' + (d.michelinUrl ? '<a class="lk" href="' + esc(d.michelinUrl) + '" target="_blank" rel="noopener noreferrer">米其林店家頁／相片 ↗</a>' : '') +
+      '<a class="lk lk--yt" href="' + ytUrl(d.n + ' 美食 食記') + '" target="_blank" rel="noopener noreferrer">YouTube 食評 ↗</a></div></article>';
   }
 
   if (grid) grid.innerHTML = SHOPS.map(cardHTML).join('');
   var cardEls = $$('.card', grid);
 
   /* ══════════ 6. 篩選 · 排序 · 依家營業緊 ══════════ */
-  var hideTimer = null;
+  var searchInput = $('#shopSearch');
+  var loadMore = $('#loadMore');
+  var pageStatus = $('#pageStatus');
   var nowClock = $('#nowClock');
   var openNowBtn = $('#openNowBtn');
 
@@ -414,6 +457,9 @@
       arr.sort(function (a, b) {
         var va = parseFloat(a.getAttribute(attr));
         var vb = parseFloat(b.getAttribute(attr));
+        if (!Number.isFinite(va) && !Number.isFinite(vb)) return (+a.getAttribute('data-i')) - (+b.getAttribute('data-i'));
+        if (!Number.isFinite(va)) return 1;
+        if (!Number.isFinite(vb)) return -1;
         if (va === vb) return (+a.getAttribute('data-i')) - (+b.getAttribute('data-i'));
         return (va - vb) * dir;
       });
@@ -433,6 +479,20 @@
     for (key in k) { kOK = false; break; }
     if (!kOK) kOK = !!k[el.getAttribute('data-k')];
     if (!(zOK && kOK)) return false;
+    var entry = SHOPS[+el.getAttribute('data-i')];
+    if (state.award !== 'all') {
+      if (!entry.bib) return false;
+      if (state.award === 'current' && !entry.bib.current) return false;
+      if (state.award === 'past' && entry.bib.current) return false;
+    }
+    if (state.city !== 'all') {
+      var city = entry.city || (entry.a.indexOf('新北市') === 0 ? 'New Taipei' : (entry.a.indexOf('台北市') === 0 ? 'Taipei' : ''));
+      if (city !== state.city) return false;
+    }
+    if (state.query) {
+      var shop = SHOPS[+el.getAttribute('data-i')];
+      if ((shop.n + ' ' + shop.a + ' ' + shop.s).toLowerCase().indexOf(state.query) === -1) return false;
+    }
     if (state.now) {
       var d = SHOPS[+el.getAttribute('data-i')];
       if (!d || openState(d, now) !== 'open') return false;
@@ -440,12 +500,43 @@
     return true;
   }
 
+  function syncAwards() {
+    $$('#awardChips [data-award]').forEach(function (button) {
+      var active = button.dataset.award === state.award;
+      button.classList.toggle('is-on', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+    $$('#cityChips [data-city]').forEach(function (button) {
+      var active = button.dataset.city === state.city;
+      button.classList.toggle('is-on', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  function renderBibOverview() {
+    var all = SHOPS.filter(function (shop) { return shop.bib; });
+    var current = all.filter(function (shop) { return shop.bib.current; });
+    var past = all.length - current.length;
+    var values = { all: all.length, current: current.length, past: past };
+    $$('[data-bib-count]').forEach(function (el) { el.textContent = values[el.dataset.bibCount]; });
+    $$('[data-bib-edition]').forEach(function (el) { el.textContent = BIB_GUIDE.latestEdition || '尚未載入'; });
+    var coverage = $('#bibCoverage');
+    if (coverage) coverage.innerHTML = BIB_GUIDE.coverage.map(function (row) {
+      return '<li><a href="' + esc(row.sourceUrl) + '" target="_blank" rel="noopener noreferrer">' + row.year + ' · ' + (row.city === 'New Taipei' ? '新北' : '台北') + ' · ' + (row.complete ? '完整年份名單已核對' : '部分年份資料') + ' ↗</a></li>';
+    }).join('');
+    var limits = $('#bibLimitations');
+    if (limits) limits.textContent = BIB_GUIDE.coverageNote || '只顯示逐項有來源的入選年份；未列年份不等於未獲獎，歷史名單不等於現在營業名單。';
+  }
+  renderBibOverview();
+
   function syncChips() {
+    syncAwards();
     $$('.chip[data-axis]').forEach(function (c) {
       var axis = c.getAttribute('data-axis');
       var id = c.getAttribute('data-id');
       var on = (id === '__all') ? (Object.keys(state[axis]).length === 0) : !!state[axis][id];
       c.classList.toggle('is-on', on);
+      c.setAttribute('aria-pressed', String(on));
     });
   }
 
@@ -459,58 +550,73 @@
       if (!pill) return;
       pill.setAttribute('data-st', st);
       var em = $('em', pill);
-      if (em) em.textContent = (st === 'open') ? '營業中' : (st === 'closed' ? '休息中' : '時間未定');
+      if (em) em.textContent = (st === 'open') ? '預計營業中' : (st === 'closed' ? '預計休息中' : '時間未定');
     });
   }
 
   function tickClock(now) {
     if (!nowClock) return;
-    var wd = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
-    nowClock.textContent = '週' + wd + ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes());
+    var local = taipeiTime(now);
+    var wd = ['日', '一', '二', '三', '四', '五', '六'][local.day];
+    nowClock.textContent = '台北 週' + wd + ' ' + pad2(local.hour) + ':' + pad2(local.minute);
   }
 
-  function applyFilter(animate) {
+  function applyFilter(animate, preservePage) {
+    if (!preservePage) state.limit = 9;
     var now = new Date();
     tickClock(now);
     refreshOpenStates(now);
     applySort();
-
     var shown = 0;
-    cardEls.forEach(function (el) {
+    $$('.card', grid).forEach(function (el) {
       var ok = matches(el, now);
       if (ok) shown++;
-      if (ok) {
-        el.classList.remove('is-gone');
-        if (animate && !REDUCE) {
-          requestAnimationFrame(function () {
-            requestAnimationFrame(function () { el.classList.remove('is-out'); });
-          });
-        } else {
-          el.classList.remove('is-out');
-        }
-      } else {
-        el.classList.add('is-out');
-      }
+      var visible = ok && shown <= state.limit;
+      var wasHidden = el.classList.contains('is-gone');
+      el.classList.toggle('is-gone', !visible);
+      el.classList.toggle('is-entering', !!(animate && !REDUCE && visible && wasHidden));
     });
-
-    if (resultCount) {
-      resultCount.innerHTML = '搵到 <b>' + shown + '</b> 間（共 ' + SHOPS.length + ' 間）' +
-        (state.now ? ' · 只計營業中' : '');
-    }
-    if (emptyBox) emptyBox.hidden = (shown !== 0);
-
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(function () {
-      var n2 = new Date();
-      cardEls.forEach(function (el) { el.classList.toggle('is-gone', !matches(el, n2)); });
-    }, animate && !REDUCE ? 460 : 0);
+    var visibleCount = Math.min(shown, state.limit);
+    if (resultCount) resultCount.innerHTML = '搵到 <b>' + shown + '</b> 間（共 ' + SHOPS.length + ' 間）' + (state.now ? ' · 按時間表預計營業中' : '');
+    if (emptyBox) emptyBox.hidden = shown !== 0;
+    if (loadMore) loadMore.hidden = visibleCount >= shown;
+    if (pageStatus) pageStatus.textContent = shown ? '已睇到 ' + visibleCount + ' / ' + shown + ' 間 · 慢慢揀，慢慢食。' : '';
   }
+
+  if (searchInput) searchInput.addEventListener('input', function () {
+    state.query = searchInput.value.trim().toLowerCase();
+    applyFilter(true);
+  });
+  if (loadMore) loadMore.addEventListener('click', function () {
+    var previousVisible = $$('.card:not(.is-gone)', grid).length;
+    state.limit += 9;
+    applyFilter(true, true);
+    var firstNew = $$('.card:not(.is-gone)', grid)[previousVisible];
+    if (firstNew) firstNew.focus({ preventScroll: true });
+  });
 
   function closestOf(node, sel) {
     return (node && node.closest) ? node.closest(sel) : null;
   }
 
   document.addEventListener('click', function (e) {
+    var award = closestOf(e.target, '[data-award], [data-award-pick]');
+    if (award) {
+      if (award.hasAttribute('data-award-pick')) resetAll();
+      state.award = award.getAttribute('data-award') || award.getAttribute('data-award-pick');
+      syncAwards(); applyFilter(true); return;
+    }
+    var city = closestOf(e.target, '[data-city]');
+    if (city) { state.city = city.dataset.city; syncAwards(); applyFilter(true); return; }
+
+    var neighborhood = closestOf(e.target, '[data-zone-pick]');
+    if (neighborhood) {
+      resetAll();
+      state.zone[neighborhood.getAttribute('data-zone-pick')] = true;
+      syncChips();
+      applyFilter(true);
+      return;
+    }
     var nowBtn = closestOf(e.target, '#openNowBtn');
     if (nowBtn) {
       state.now = !state.now;
@@ -550,7 +656,8 @@
 
   function resetAll() {
     state.zone = {}; state.kind = {};
-    state.sort = ''; state.dir = -1; state.now = false;
+    state.sort = ''; state.dir = -1; state.now = false; state.query = ''; state.award = 'all'; state.city = 'all';
+    if (searchInput) searchInput.value = '';
     if (openNowBtn) {
       openNowBtn.classList.remove('is-on');
       openNowBtn.setAttribute('aria-pressed', 'false');
@@ -560,14 +667,7 @@
   var resetBtn = $('#resetBtn');
   if (resetBtn) resetBtn.addEventListener('click', resetAll);
 
-  /* 卡片：撳地址 → Google Map */
-  if (grid) {
-    grid.addEventListener('click', function (e) {
-      var t = closestOf(e.target, '[data-map]');
-      if (t) { e.preventDefault(); openTab(mapsUrl(t.getAttribute('data-map'))); }
-    });
-  }
-
+  syncChips();
   syncSortChips();
   applyFilter(false);
 
@@ -576,7 +676,7 @@
     var n = new Date();
     tickClock(n);
     refreshOpenStates(n);
-    if (state.now) applyFilter(false);
+    if (state.now) applyFilter(false, true);
   }, 60000);
 
   /* ══════════ 7. 地圖：標記 + 聚落 ══════════ */
@@ -587,7 +687,7 @@
 
   if (markersHost) {
     markersHost.innerHTML = SPOTS.map(function (s, i) {
-      return '<button class="mk" type="button" data-i="' + i + '" style="left:' + (s.sx / 10) + '%;top:' + (s.sy / 7.2) + '%;--mc:' + s.c + '">' +
+      return '<button class="mk" type="button" aria-label="' + (i + 1) + ' ' + esc(s.t) + '" data-i="' + i + '" style="left:' + (s.sx / 10) + '%;top:' + (s.sy / 7.2) + '%;--mc:' + s.c + '">' +
                '<span class="mk__pin">' + (i + 1) + '</span>' +
                '<span class="mk__label">' + esc(s.t) + '</span>' +
              '</button>';
@@ -604,7 +704,7 @@
         return SHOPS.some(function (d) { return d.n === t; });
       }).length;
       return '<button class="spot" type="button" data-i="' + i + '" style="--sc:' + s.c + '">' +
-               '<span class="spot__ico" aria-hidden="true">' + s.g + '</span>' +
+               '<span class="spot__ico" aria-hidden="true">' + pad2(i + 1) + '</span>' +
                '<span class="spot__txt"><span class="spot__name">' + esc(s.t) + '</span>' +
                '<span class="spot__desc">' + esc(s.d.split('—')[0].split('——')[0].slice(0, 34)) + '…</span></span>' +
                '<span class="spot__n">' + n + '</span>' +
@@ -620,7 +720,9 @@
     if (!spotDetail) return;
     var s = SPOTS[i];
     var tags = (s.tags || []).map(function (t) {
-      return '<span data-goto="' + esc(t) + '">' + esc(t) + '</span>';
+      return SHOPS.some(function (shop) { return shop.n === t; })
+        ? '<button type="button" data-goto="' + esc(t) + '">' + esc(t) + '</button>'
+        : '<span>' + esc(t) + '</span>';
     }).join('');
     spotDetail.innerHTML =
       '<h4 class="pd__title">' + esc(s.t) + '</h4>' +
@@ -633,8 +735,11 @@
 
   function selectSpot(i, scrollList) {
     activeSpot = i;
-    $$('.mk').forEach(function (m, n) { m.classList.toggle('is-on', n === i); });
-    $$('.spot').forEach(function (m, n) { m.classList.toggle('is-on', n === i); });
+    $$('.mk, .spot').forEach(function (m) {
+      var selected = +m.getAttribute('data-i') === i;
+      m.classList.toggle('is-on', selected);
+      m.setAttribute('aria-pressed', String(selected));
+    });
     renderDetail(i);
     if (scrollList && REDUCE === false) {
       var el = $$('.spot')[i];
@@ -652,13 +757,14 @@
       SHOPS.forEach(function (d) { if (d.n === name) shop = d; });
       if (!shop) return;
 
-      state.zone = {}; state.kind = {};
-      state.sort = ''; state.dir = -1;
-      syncChips(); syncSortChips(); applyFilter(false);
+      resetAll();
+      state.limit = Math.ceil((shop._i + 1) / 9) * 9;
+      applyFilter(false, true);
 
       var target = null;
       cardEls.forEach(function (el) { if (el.getAttribute('data-name') === name) target = el; });
       if (target) {
+        target.focus({ preventScroll: true });
         target.scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth', block: 'center' });
         target.classList.add('is-flash');
         setTimeout(function () { target.classList.remove('is-flash'); }, 1600);
@@ -680,14 +786,14 @@
         if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (el) { io.observe(el); });
+    els.forEach(function (el) { el.classList.add('is-waiting'); io.observe(el); });
   }
   observeReveals();
 
   /* ══════════ 9. 數字計數 ══════════ */
   function runCounters() {
     var nodes = $$('[data-count]');
-    if (REDUCE) {
+    if (REDUCE || !('IntersectionObserver' in window)) {
       nodes.forEach(function (el) {
         var v = parseFloat(el.getAttribute('data-count'));
         var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
@@ -706,7 +812,7 @@
         var dur = 1500, t0 = 0;
         function step(t) {
           if (!t0) t0 = t;
-          var p = Math.min(1, (t - t0) / dur);
+          var p = REDUCE ? 1 : Math.min(1, (t - t0) / dur);
           var e = 1 - Math.pow(1 - p, 3);
           el.textContent = pre + (end * e).toFixed(dec);
           if (p < 1) requestAnimationFrame(step);
@@ -723,7 +829,7 @@
   var progress = $('#progress');
   var stages = $$('.stage');
   var navLinks = $$('.nav__links a');
-  var sections = ['route', 'shops', 'map', 'tips'].map(function (id) { return document.getElementById(id); });
+  var sections = ['bib', 'route', 'shops', 'map', 'tips'].map(function (id) { return document.getElementById(id); });
   var ticking = false;
 
   function onFrame() {
@@ -760,39 +866,37 @@
   window.addEventListener('resize', onScroll, { passive: true });
   onFrame();
 
-  /* ══════════ 11. 漢堡選單 ══════════ */
   var burger = $('#burger');
   var sheet = $('#sheet');
+  function closeMenu(returnFocus) {
+    if (!burger || !sheet) return;
+    sheet.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('is-locked');
+    if (returnFocus) burger.focus();
+  }
   if (burger && sheet) {
     burger.addEventListener('click', function () {
       var open = sheet.classList.toggle('is-open');
       burger.setAttribute('aria-expanded', String(open));
-      document.body.classList.toggle('is-locked', open && window.innerWidth < 900);
     });
     sheet.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        sheet.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.classList.remove('is-locked');
-      }
+      if (e.target.closest('a')) closeMenu(false);
     });
-  }
-
-  /* ══════════ 12. 載入動畫 + Hero 進場 ══════════ */
-  function boot() {
-    var loader = $('#loader');
-    if (loader) {
-      setTimeout(function () { loader.classList.add('is-done'); }, REDUCE ? 0 : 520);
-    }
-    stages.forEach(function (st) {
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { st.classList.add('is-ready'); });
-      });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sheet.classList.contains('is-open')) closeMenu(true);
     });
-    onFrame();
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target)) closeMenu(false);
+    });
+    document.addEventListener('focusin', function (e) {
+      if (!nav.contains(e.target)) closeMenu(false);
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 900) closeMenu(false);
+    }, { passive: true });
   }
-  if (document.readyState === 'complete') boot();
-  else window.addEventListener('load', boot);
-  setTimeout(boot, 2600);   // 保險：圖片太慢都照樣收起載入畫面
+  stages.forEach(function (stage) { stage.classList.add('is-ready'); });
+  onFrame();
 
 })();
